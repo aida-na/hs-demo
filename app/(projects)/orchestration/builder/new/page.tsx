@@ -69,7 +69,7 @@ export default function NewCampaign() {
                     Back to Goals
                   </Button>
                 </Link>
-                <Link href="/campaigns/new/journey">
+                <Link href="/orchestration/builder/new/journey">
                   <Button className="gap-2">
                     Continue to Journey Builder
                     <ArrowRight className="h-4 w-4" />
