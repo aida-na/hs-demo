@@ -22,6 +22,17 @@ export interface OpenAIPromptConfig {
   userMessageTemplate: string;
 }
 
+// Create the content-specific bullet points outside of the template strings
+const emailBulletPoints = `- Strategic subject line (under 50 characters)
+- Engaging preview text
+- Personalized main content
+- Clear, motivating call to action`;
+
+const directMailBulletPoints = `- Attention-grabbing headline
+- Persuasive main content
+- Strategic call to action
+- Design element recommendations`;
+
 export const OPENAI_CONFIG = {
   basic: {
     model: "gpt-3.5-turbo",
@@ -81,13 +92,7 @@ Please follow this structured approach:
 
 3. Content Development
 For {contentType}, create:
-${'{contentType}' === 'email' ? `- Strategic subject line (under 50 characters)
-- Engaging preview text
-- Personalized main content
-- Clear, motivating call to action` : `- Attention-grabbing headline
-- Persuasive main content
-- Strategic call to action
-- Design element recommendations`}
+{contentTypeBulletPoints}
 
 4. Compliance Check
 - Ensure all content aligns with provided guidelines
@@ -96,6 +101,11 @@ ${'{contentType}' === 'email' ? `- Strategic subject line (under 50 characters)
 
 Please provide the final content with a brief explanation of your strategic choices.`
   }
+};
+
+// Function to get the content type specific bullet points
+export const getContentTypeBulletPoints = (contentType: string): string => {
+  return contentType === 'email' ? emailBulletPoints : directMailBulletPoints;
 };
 
 export const CONTENT_TYPE_GUIDELINES = {
