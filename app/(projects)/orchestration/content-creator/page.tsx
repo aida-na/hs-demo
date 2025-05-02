@@ -7,7 +7,6 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Eye, FileText, Save, Plus, File, Bold, Italic, Underline, Trash2, ListOrdered, List, Heading1, Heading2, Link as LinkIcon } from "lucide-react";
 import { marked } from 'marked';
-import { GuidelinesModal } from '@/components/guidelines-modal';
 import { NewDocumentModal } from '@/components/new-document-modal';
 import { loadGuidelines } from '@/lib/config';
 import {
@@ -27,14 +26,6 @@ interface Document {
   content: string;
   createdAt: string;
 }
-
-// Configure marked options for GitHub-flavored markdown
-marked.setOptions({
-  gfm: true,
-  breaks: true,
-  mangle: false,
-  headerIds: false
-});
 
 export default function Home() {
   const [content, setContent] = useState('');
@@ -317,12 +308,7 @@ export default function Home() {
               <TabsContent value="preview" className="markdown-preview">
                 <div 
                   className="prose prose-sm sm:prose lg:prose-lg xl:prose-xl mx-auto p-6 bg-white"
-                  dangerouslySetInnerHTML={{ 
-                    __html: marked(content, {
-                      breaks: true,
-                      gfm: true
-                    })
-                  }}
+
                 />
               </TabsContent>
             </Card>
@@ -335,11 +321,6 @@ export default function Home() {
         </div>
       </main>
 
-      <GuidelinesModal
-        isOpen={isGuidelinesOpen}
-        onClose={() => setIsGuidelinesOpen(false)}
-        initialGuidelines={guidelines}
-      />
 
       <NewDocumentModal
         isOpen={isNewDocumentOpen}
