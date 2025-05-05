@@ -8,7 +8,6 @@ import Link from "next/link"
 import { ArrowLeft, Check, Save, Send } from "lucide-react"
 import JourneyBuilder from "@/components/journey/journey-builder"
 import JourneyTemplates from "@/components/journey/journey-templates"
-import JourneyImport from "@/components/journey/journey-import"
 import CampaignConfiguration from "@/components/campaign/campaign-configuration"
 
 export default function JourneyBuilderPage() {
@@ -21,7 +20,7 @@ export default function JourneyBuilderPage() {
   return (
     <div className="container mx-auto py-10 px-4">
       <div className="flex items-center mb-8">
-        <Link href="/campaigns/new">
+        <Link href="/orchestration/builder/new">
           <Button variant="ghost" size="sm" className="gap-2">
             <ArrowLeft className="h-4 w-4" />
             Back to Campaign Setup
@@ -56,10 +55,9 @@ export default function JourneyBuilderPage() {
       {currentStep === "builder" && (
         <>
           <Tabs value={activeTab} onValueChange={setActiveTab} className="mb-10">
-            <TabsList className="grid w-full grid-cols-3">
+            <TabsList className="grid w-full grid-cols-2">
               <TabsTrigger value="scratch">Start from Scratch</TabsTrigger>
               <TabsTrigger value="template">Choose a Template</TabsTrigger>
-              <TabsTrigger value="import">Import Journey</TabsTrigger>
             </TabsList>
 
             <TabsContent value="scratch">
@@ -84,18 +82,6 @@ export default function JourneyBuilderPage() {
 
                   <div className="flex justify-end mt-8">
                     <Button onClick={() => setActiveTab("scratch")}>Customize Selected Template</Button>
-                  </div>
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="import">
-              <Card>
-                <CardContent className="pt-6">
-                  <JourneyImport />
-
-                  <div className="flex justify-end mt-8">
-                    <Button onClick={() => setActiveTab("scratch")}>Edit Imported Journey</Button>
                   </div>
                 </CardContent>
               </Card>

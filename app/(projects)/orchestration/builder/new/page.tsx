@@ -91,7 +91,7 @@ export default function NewCampaign() {
                 You have selected your campaign goal and patient segments. Now lets build your journey.
               </p>
 
-              <Link href="/campaigns/new/journey">
+              <Link href="/orchestration/builder/new/journey">
                 <Button className="gap-2">
                   Go to Journey Builder
                   <ArrowRight className="h-4 w-4" />
