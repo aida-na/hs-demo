@@ -141,13 +141,20 @@ export default function Dashboard() {
           <div className="mb-6">
             <div className="flex justify-between items-center mb-2">
               <h1 className="text-2xl font-bold tracking-tight">Smart Cohorts Dashboard</h1>
-              <Button>
-                <Plus className="mr-2 h-4 w-4" />
-                New Audience
-              </Button>
+                  <Select defaultValue="last30days">
+                <SelectTrigger className="w-[180px]">
+                  <SelectValue placeholder="Select timeframe" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="last7days">Last 7 days</SelectItem>
+                  <SelectItem value="last30days">Last 30 days</SelectItem>
+                  <SelectItem value="last90days">Last 90 days</SelectItem>
+                  <SelectItem value="lastyear">Last year</SelectItem>
+                </SelectContent>
+              </Select>
             </div>
             <p className="text-muted-foreground">
-              Create and use audiences, target your best prospects, and personalize their experiences
+              Target your best prospects for each marketing campaign. Use Smart Cohorts to personalize messaging and engagement approach inside your campaign audience.
             </p>
           </div>
 
@@ -174,27 +181,15 @@ export default function Dashboard() {
                 </TabsTrigger>
               </TabsList>
 
-              <Select defaultValue="last30days">
-                <SelectTrigger className="w-[180px]">
-                  <SelectValue placeholder="Select timeframe" />
-                </SelectTrigger>
-                <SelectContent>
-                  <SelectItem value="last7days">Last 7 days</SelectItem>
-                  <SelectItem value="last30days">Last 30 days</SelectItem>
-                  <SelectItem value="last90days">Last 90 days</SelectItem>
-                  <SelectItem value="lastyear">Last year</SelectItem>
-                </SelectContent>
-              </Select>
+              <Button>
+                <Plus className="mr-2 h-4 w-4" />
+                New Audience
+              </Button>
             </div>
 
             {audiences.map((audience) => (
               <TabsContent key={audience.id} value={audience.id} className="mt-0">
-                <div className="mb-4">
-                  <h2 className="text-xl font-bold tracking-tight">{audience.name}</h2>
-                  <p className="text-muted-foreground">
-                    Optimize your {audience.name.toLowerCase()} with smart cohorts
-                  </p>
-                </div>
+ 
 
                 <div className="grid gap-6 md:grid-cols-3">
                   <Card>
@@ -237,9 +232,9 @@ export default function Dashboard() {
                   </Card>
                 </div>
 
-                <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-3">
+                <Card className="mt-6 grid grid-cols-3 gap-6 lg:grid-cols-3">
                   {/* Smart Cohorts Section - Takes up 2/3 of the grid in large screens */}
-                  <Card className="col-span-1 lg:col-span-2">
+                  <div className="col-span-1 lg:col-span-2">
                     <CardHeader>
                       <CardTitle>Smart Cohorts</CardTitle>
                       <CardDescription>
@@ -270,7 +265,7 @@ export default function Dashboard() {
                                 </h3>
                                 <span className="text-sm bg-blue-50 text-blue-700 px-3 py-1 rounded-full">{cohort.size.toLocaleString()} members</span>
                               </div>
-                              <div className="grid grid-cols-3 gap-4 mb-4">
+                              <div className="grid grid-cols-2 gap-4 mb-4">
                                 <div className="bg-gray-50 p-3 rounded">
                                   <p className="text-xs text-gray-500">Recommended Channel</p>
                                   <p className="font-medium">{cohort.response.split(' + ')[0]}</p>
@@ -278,10 +273,6 @@ export default function Dashboard() {
                                 <div className="bg-gray-50 p-3 rounded">
                                   <p className="text-xs text-gray-500">Secondary Channel</p>
                                   <p className="font-medium">{cohort.response.split(' + ')[1] || "N/A"}</p>
-                                </div>
-                                <div className="bg-gray-50 p-3 rounded">
-                                  <p className="text-xs text-gray-500">Expected Response Rate</p>
-                                  <p className="font-medium">{20 + idx * 3}%</p>
                                 </div>
                               </div>
                               <div className="text-sm text-gray-700 mb-4">
@@ -308,12 +299,12 @@ export default function Dashboard() {
                         </div>
                       </div>
                     </CardContent>
-                  </Card>
+                  </div>
 
                   {/* Right column - Channel Effectiveness and Performance Metrics stacked */}
-                  <div className="col-span-1 space-y-6">
+                  <div className="col-span-1 space-y-7">
                     {/* Channel Effectiveness Card */}
-                    <Card>
+                    <Card className="mt-10">
                       <CardHeader>
                         <CardTitle>Channel Effectiveness</CardTitle>
                         <CardDescription>Engagement by communication channel</CardDescription>
@@ -359,7 +350,7 @@ export default function Dashboard() {
                       </CardContent>
                     </Card>
                   </div>
-                </div>
+                </Card>
               </TabsContent>
             ))}
           </Tabs>

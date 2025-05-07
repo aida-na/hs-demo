@@ -56,14 +56,10 @@ const campaigns = [
       costPerConversion: 12.45,
     },
     channelMetrics: {
-      SMS: { sent: 2500, delivered: 2450, opened: 2100, clicked: 1200, converted: 650 },
+      SMS: { sent: 2500, delivered: 2450, opened: 0, clicked: 1200, converted: 650 },
       Email: { sent: 2800, delivered: 2700, opened: 1800, clicked: 950, converted: 420 },
-      Call: { sent: 950, delivered: 850, opened: 850, clicked: 850, converted: 320 },
+      Call: { sent: 950, delivered: 0, opened: 0, clicked: 0, converted: 320 },
       Mail: { sent: 0, delivered: 0, opened: 0, clicked: 0, converted: 0 },
-    },
-    owner: {
-      name: "Sarah Johnson",
-      avatar: "/placeholder.svg?height=32&width=32",
     },
   },
   {
@@ -90,12 +86,8 @@ const campaigns = [
     channelMetrics: {
       SMS: { sent: 0, delivered: 0, opened: 0, clicked: 0, converted: 0 },
       Email: { sent: 2180, delivered: 2100, opened: 1450, clicked: 820, converted: 380 },
-      Call: { sent: 1200, delivered: 980, opened: 980, clicked: 980, converted: 420 },
-      Mail: { sent: 1800, delivered: 1800, opened: 950, clicked: 650, converted: 280 },
-    },
-    owner: {
-      name: "Michael Chen",
-      avatar: "/placeholder.svg?height=32&width=32",
+      Call: { sent: 1200, delivered: 980, opened: 0, clicked: 0, converted: 420 },
+      Mail: { sent: 1800, delivered: 0, opened: 0, clicked: 0, converted: 280 },
     },
   },
   {
@@ -121,14 +113,10 @@ const campaigns = [
       costPerConversion: 14.25,
     },
     channelMetrics: {
-      SMS: { sent: 3200, delivered: 3150, opened: 2800, clicked: 1950, converted: 850 },
-      Email: { sent: 3420, delivered: 3350, opened: 2450, clicked: 1650, converted: 720 },
-      Call: { sent: 1500, delivered: 1350, opened: 1350, clicked: 1350, converted: 580 },
-      Mail: { sent: 2200, delivered: 2200, opened: 1100, clicked: 850, converted: 320 },
-    },
-    owner: {
-      name: "Jessica Taylor",
-      avatar: "/placeholder.svg?height=32&width=32",
+      SMS: { sent: 3200, delivered: 3150, opened: 0, clicked: 1950, converted: 450 },
+      Email: { sent: 3420, delivered: 3350, opened: 2450, clicked: 1650, converted: 740 },
+      Call: { sent: 1500, delivered: 1350, opened: 0, clicked: 0, converted: 58 },
+      Mail: { sent: 2200, delivered: 0, opened: 0, clicked: 0, converted: 0 },
     },
   },
   {
@@ -158,10 +146,6 @@ const campaigns = [
       Call: { sent: 0, delivered: 0, opened: 0, clicked: 0, converted: 0 },
       Mail: { sent: 950, delivered: 950, opened: 580, clicked: 420, converted: 180 },
     },
-    owner: {
-      name: "David Wilson",
-      avatar: "/placeholder.svg?height=32&width=32",
-    },
   },
   {
     id: "highrisk-q2",
@@ -189,10 +173,6 @@ const campaigns = [
       Email: { sent: 0, delivered: 0, opened: 0, clicked: 0, converted: 0 },
       Call: { sent: 890, delivered: 780, opened: 780, clicked: 780, converted: 320 },
       Mail: { sent: 0, delivered: 0, opened: 0, clicked: 0, converted: 0 },
-    },
-    owner: {
-      name: "Amanda Rodriguez",
-      avatar: "/placeholder.svg?height=32&width=32",
     },
   },
 ]
@@ -333,13 +313,7 @@ export default function CampaignDashboard() {
                   </CardContent>
                   <CardFooter className="pt-0">
                     <div className="flex items-center justify-between w-full">
-                      <div className="flex items-center gap-2">
-                        <Avatar className="h-6 w-6">
-                          <AvatarImage src={campaign.owner.avatar || "/placeholder.svg"} alt={campaign.owner.name} />
-                          <AvatarFallback>{campaign.owner.name.charAt(0)}</AvatarFallback>
-                        </Avatar>
-                        <span className="text-xs text-muted-foreground">{campaign.owner.name}</span>
-                      </div>
+
                       <Button variant="ghost" size="sm" className="gap-1">
                         <span className="text-xs">Details</span>
                         <ChevronRight className="h-3 w-3" />

@@ -2,6 +2,9 @@
 
 import { useState } from "react"
 import { Button } from "@/components/ui/button"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
+import { CheckCircle } from "lucide-react"
+import { useRouter } from "next/navigation"
 import { Card, CardContent } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import Link from "next/link"
@@ -17,6 +20,19 @@ export default function JourneyBuilderPage() {
   const selectedGoal = "Patient Onboarding"
   const selectedSegments = ["New Members", "Age 30-45", "Chronic Condition"]
 
+  const router = useRouter()
+  const [showSuccessDialog, setShowSuccessDialog] = useState(false)
+  
+  const handleLaunchCampaign = () => {
+    // Here you would typically make an API call to launch the campaign
+    // Then show success dialog when complete
+    setShowSuccessDialog(true)
+  }
+  
+  const handleViewDashboard = () => {
+    router.push("/orchestration")
+  }
+  
   return (
     <div className="container mx-auto py-10 px-4">
       <div className="flex items-center mb-8">
@@ -96,7 +112,6 @@ export default function JourneyBuilderPage() {
             <h2 className="text-xl font-semibold mb-6">Campaign Configuration</h2>
 
             <CampaignConfiguration />
-
             <div className="flex justify-between mt-8">
               <Button variant="outline" className="gap-2" onClick={() => setCurrentStep("builder")}>
                 <ArrowLeft className="h-4 w-4" />
@@ -108,7 +123,7 @@ export default function JourneyBuilderPage() {
                   <Save className="h-4 w-4" />
                   Save as Draft
                 </Button>
-                <Button className="gap-2">
+                <Button className="gap-2" onClick={handleLaunchCampaign}>
                   <Send className="h-4 w-4" />
                   Launch Campaign
                 </Button>
@@ -117,7 +132,30 @@ export default function JourneyBuilderPage() {
           </CardContent>
         </Card>
       )}
+      
+      {/* Success Dialog */}
+      <Dialog open={showSuccessDialog} onOpenChange={setShowSuccessDialog}>
+        <DialogContent className="sm:max-w-md">
+          <DialogHeader>
+            <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-green-100 mb-4">
+              <CheckCircle className="h-6 w-6 text-green-600" />
+            </div>
+            <DialogTitle className="text-center text-xl">Campaign Launched!</DialogTitle>
+            <DialogDescription className="text-center">
+              Your campaign has been successfully launched and is now active.
+              You can view and monitor performance in the dashboard.
+            </DialogDescription>
+          </DialogHeader>
+          <DialogFooter className="flex flex-col sm:flex-row sm:justify-center sm:space-x-2 mt-4">
+            <Button className="w-full sm:w-auto" onClick={handleViewDashboard}>
+              View in Dashboard
+            </Button>
+            <Button variant="outline" className="mt-3 sm:mt-0 w-full sm:w-auto" onClick={() => setShowSuccessDialog(false)}>
+              Create Another Campaign
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
-

@@ -39,7 +39,7 @@ export default function NewCampaign() {
               <CampaignGoalSelector />
 
               <div className="flex justify-end mt-8">
-                <Link href="/orchestration/builder/new?step=segments">
+                <Link href="/orchestration/builder/new?value=segments">
                   <Button className="gap-2">
                     Continue to Segments
                     <ArrowRight className="h-4 w-4" />
@@ -104,4 +104,3 @@ export default function NewCampaign() {
     </div>
   )
 }
-

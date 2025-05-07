@@ -9,6 +9,7 @@ import { Progress } from "@/components/ui/progress"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import { Separator } from '@/components/ui/separator'
+import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
@@ -27,6 +28,10 @@ import {
 } from 'recharts';
 import {
   CheckCircle2,
+  Activity,
+  Zap,
+  Heart,
+  ArrowRight,
   Calendar,
   Clock,
   Database,
@@ -95,12 +100,11 @@ export default function HDEStatusPage() {
 function DataOverview() {
   const totalMembers = "4.2M"
   const dataSources = "12"
-  const rowsReconciled = "1.2B"
+  const rowsReconciled = "218K"
   const lastRunDate = "April 15, 2025"
   const processingTime = "3.2 hours"
   const genderSourcesFixed = "15"
-  const zipCodeFixed = "94%" 
-  const fixesApplied = "218K"
+  const zipCodeFixed = "94%"
 
   return (
     <div className="space-y-4">
@@ -110,27 +114,6 @@ function DataOverview() {
           <p className="text-muted-foreground">
             Stitch member data from dispersed warehouses into rich, actionable profiles
           </p>
-        </div>
-        <div className="mt-4 flex items-center gap-2 md:mt-0">
-          <Select defaultValue="all">
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Select client" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Clients</SelectItem>
-              <SelectItem value="acme">Acme Health</SelectItem>
-              <SelectItem value="metro">Metro Healthcare</SelectItem>
-              <SelectItem value="central">Central Health Plan</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button size="sm" variant="outline" className="gap-1">
-            <Filter className="h-4 w-4" />
-            Filters
-          </Button>
-          <Button size="sm" className="gap-1">
-            <PlusCircle className="h-4 w-4" />
-            New Integration
-          </Button>
         </div>
       </div>
 
@@ -171,7 +154,7 @@ function DataOverview() {
                 <TableIcon className="h-8 w-8 text-purple-700" />
               </div>
               <div>
-                <p className="text-sm font-medium text-purple-700">Rows of Data Reconciled</p>
+                <p className="text-sm font-medium text-purple-700">Total Fixes Applied</p>
                 <h3 className="text-4xl md:text-5xl font-bold text-purple-900">{rowsReconciled}</h3>
               </div>
             </div>
@@ -210,7 +193,7 @@ function DataOverview() {
               Processing Timeline
             </CardTitle>
             <CardDescription>
-              From receipt of data to returning scores + Smart Cohorts
+              From receipt of data to returning scores and Smart Cohorts
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -226,50 +209,41 @@ function DataOverview() {
           </CardContent>
         </Card>
       </div>
-      
-      {/* Data Reconciliation Details */}
-      <div className="grid grid-cols-1 md:grid-cols-12 gap-6 mb-10">
-        <div className="md:col-span-6">
-          <Card className="h-full bg-white shadow-md">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <CheckCircle2 className="h-5 w-5 text-blue-600" />
-                Fixes Applied
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-                <div className="space-y-4">
-                  <div className="flex justify-between items-center">
-                    <span className="text-sm text-gray-600">Total Fixes Applied</span>
-                    <span className="text-2xl font-bold text-blue-600">{fixesApplied}</span>
-                  </div>
-                  <Separator />
-                </div>
-            </CardContent>
-          </Card>
+      <Card className="mt-6">
+  <CardHeader>
+    <CardTitle className="flex items-center">
+      <Sparkles className="h-5 w-5 mr-2 text-primary" />
+      Quick-Win Opportunities
+    </CardTitle>
+    <CardDescription>
+      Immediate improvements through strategic data connections
+    </CardDescription>
+  </CardHeader>
+  <CardContent>
+    <div className="space-y-4">
+      <div className="p-4 border rounded-lg bg-blue-50">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="font-medium">Pharmacy Data Connection</h3>
+          <Badge className="bg-blue-200 text-blue-800">High Impact</Badge>
         </div>
-        
-        <div className="md:col-span-6">
-          <Card className="h-full bg-white shadow-md">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <BarChartIcon className="h-5 w-5 text-blue-600" />
-                Data Reconciliation
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-2">
-                  <div className="text-center p-4 bg-emerald-50 rounded-lg">
-                  <h3 className="text-lg font-semibold mb-1">Gender & Zip Code Data</h3>
-                  <div className="flex items-center justify-center">
-                    <span className="inline-block px-3 py-1 mr-1 bg-white text-green-800 rounded-full text-xs">23,458 conflicts resolved</span>
-                  </div>
-                </div>
-              </div>
-            </CardContent>
-          </Card>
+        <div className="grid grid-cols-3 gap-2 mb-3">
+          <div>
+            <p className="text-xs text-muted-foreground">Implementation Time</p>
+            <p className="font-medium">1-2 weeks</p>
+          </div>
+          <div>
+            <p className="text-xs text-muted-foreground">Members Affected</p>
+            <p className="font-medium">12,850</p>
+          </div>
         </div>
+        <p className="text-sm mb-3">
+          Connecting pharmacy data could improve medication adherence campaigns and reduce preventable admissions.
+        </p>
+        <Button size="sm">Connect</Button>
       </div>
+    </div>
+  </CardContent>
+</Card>
     </div>
   )
 }
@@ -346,28 +320,65 @@ function DataQuality() {
         </CardContent>
       </Card>
       
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Data Completeness by Source</CardTitle>
-            <CardDescription>Percentage of complete records by data source</CardDescription>
-          </CardHeader>
-          <CardContent className="h-80">
-            {/* HERE - Added the Data Completeness Chart */}
-            <DataCompletenessBySourceChart />
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Identity Resolution</CardTitle>
-            <CardDescription>Member identity matching results</CardDescription>
-          </CardHeader>
-          <CardContent className="h-80">
-            {/* HERE - Added the Identity Resolution Chart */}
-            <IdentityResolutionChart />
-          </CardContent>
-        </Card>
+      <div className="grid gap-6 ">
+<Card>
+  <CardHeader>
+    <CardTitle>Missing Member Insights</CardTitle>
+    <CardDescription>
+      Critical care gaps due to disconnected data sources
+    </CardDescription>
+  </CardHeader>
+  <CardContent>
+    <div className="grid grid-cols-2 gap-4 mb-6">
+      <div className="p-4 border rounded-lg text-center">
+        <div className="text-3xl font-bold text-amber-500">842</div>
+        <p className="text-sm font-medium mt-1">Members at Risk</p>
+        <p className="text-xs text-muted-foreground mt-1">
+          Due to fragmented profiles
+        </p>
+      </div>
+      
+      <div className="p-4 border rounded-lg text-center">
+        <div className="text-3xl font-bold text-amber-500">28%</div>
+        <p className="text-sm font-medium mt-1">Care Gaps</p>
+        <p className="text-xs text-muted-foreground mt-1">
+          Currently invisible in your system
+        </p>
+      </div>
+    </div>
+    
+    <div className="border-t pt-4">
+      <h3 className="font-medium mb-3">Impact on High-Priority Members</h3>
+      <div className="space-y-3">
+        <div className="p-3 border rounded-lg bg-red-50">
+          <div className="flex justify-between mb-2">
+            <span className="font-medium">High-Risk Diabetic Members</span>
+            <Badge className="bg-red-200 text-red-800">320 members</Badge>
+          </div>
+          <p className="text-sm">
+            Missing pharmacy data prevents identification of medication non-adherence
+          </p>
+          <Button variant="outline" size="sm" className="mt-2">
+            Resolve with Pharmacy Data Connection
+          </Button>
+        </div>
+        
+        <div className="p-3 border rounded-lg bg-amber-50">
+          <div className="flex justify-between mb-2">
+            <span className="font-medium">Post-Discharge Patients</span>
+            <Badge className="bg-amber-200 text-amber-800">165 members</Badge>
+          </div>
+          <p className="text-sm">
+            Missing clinical data creates blind spots in post-discharge follow-up
+          </p>
+          <Button variant="outline" size="sm" className="mt-2">
+            Resolve with Clinical Data Connection
+          </Button>
+        </div>
+      </div>
+    </div>
+  </CardContent>
+</Card>
       </div>
     </div>
   )
@@ -389,6 +400,179 @@ function DataSources() {
           </Button>
         </div>
       </div>
+      <div className="grid gap-6 md:grid-cols-2">
+        <Card>
+          <CardHeader>
+            <CardTitle>Connected Data Sources</CardTitle>
+            <CardDescription>Status of data warehouse connections</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="rounded-lg border p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Database className="h-5 w-5 text-primary" />
+                    <div>
+                      <p className="font-medium">Member Demographics</p>
+                      <p className="text-xs text-muted-foreground">Primary member information database</p>
+                    </div>
+                  </div>
+                  <Badge className="bg-green-500">Connected</Badge>
+                </div>
+                <div className="mt-4">
+                  <div className="flex items-center justify-between text-sm">
+                    <span>Last sync: 15 minutes ago</span>
+                    <span>5.2M records</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-lg border p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Database className="h-5 w-5 text-primary" />
+                    <div>
+                      <p className="font-medium">Claims Data Warehouse</p>
+                      <p className="text-xs text-muted-foreground">Historical claims and diagnoses</p>
+                    </div>
+                  </div>
+                  <Badge className="bg-green-500">Connected</Badge>
+                </div>
+                <div className="mt-4">
+                  <div className="flex items-center justify-between text-sm">
+                    <span>Last sync: 2 hours ago</span>
+                    <span>28.7M records</span>
+                  </div>
+                </div>
+              </div>
+
+              <div className="rounded-lg border p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Database className="h-5 w-5 text-primary" />
+                    <div>
+                      <p className="font-medium">Clinical Data Repository</p>
+                      <p className="text-xs text-muted-foreground">Lab results and clinical measurements</p>
+                    </div>
+                  </div>
+                  <Badge className="bg-amber-500">Syncing</Badge>
+                </div>
+                <div className="mt-4">
+                  <div className="flex items-center justify-between text-sm">
+                    <span>Sync in progress...</span>
+                    <span>12.3M records</span>
+                  </div>
+                  <Progress value={68} className="mt-2 h-1" />
+                </div>
+              </div>
+
+              <div className="rounded-lg border p-4">
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center gap-3">
+                    <Database className="h-5 w-5 text-primary" />
+                    <div>
+                      <p className="font-medium">Marketing Engagement</p>
+                      <p className="text-xs text-muted-foreground">Campaign and conversion data</p>
+                    </div>
+                  </div>
+                  <Badge className="bg-red-500">Error</Badge>
+                </div>
+                <div className="mt-4">
+                  <div className="flex items-center justify-between text-sm">
+                    <span className="text-red-500">Authentication failed</span>
+                    <Button variant="outline" size="sm">
+                      Reconnect
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>Claims Data Integration</CardTitle>
+            <CardDescription>Status of claims data processing</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <div className="space-y-4">
+              <div className="flex items-center justify-between">
+                <h4 className="text-sm font-medium">ICD-10 Claims Processing</h4>
+                <Badge className="bg-green-500">Active</Badge>
+              </div>
+
+              <div className="space-y-4">
+                <div className="rounded-lg border p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium">Diagnoses (ICD-10)</p>
+                      <p className="text-xs text-muted-foreground">Primary and secondary diagnoses codes</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="outline" className="border-green-500 text-green-500">
+                        High Value
+                      </Badge>
+                      <HelpCircle className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <div className="flex items-center justify-between text-sm">
+                      <span>Completeness:</span>
+                      <span>92%</span>
+                    </div>
+                    <Progress value={92} className="mt-2 h-2" />
+                  </div>
+                </div>
+
+                <div className="rounded-lg border p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium">Pharmacy Claims</p>
+                      <p className="text-xs text-muted-foreground">Medication prescriptions and fills</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="outline" className="border-green-500 text-green-500">
+                        High Value
+                      </Badge>
+                      <HelpCircle className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <div className="flex items-center justify-between text-sm">
+                      <span>Completeness:</span>
+                      <span>87%</span>
+                    </div>
+                    <Progress value={87} className="mt-2 h-2" />
+                  </div>
+                </div>
+
+                <div className="rounded-lg border p-4">
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <p className="font-medium">Procedures (CPT/HCPCS)</p>
+                      <p className="text-xs text-muted-foreground">Medical procedures and services</p>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Badge variant="outline" className="border-green-500 text-green-500">
+                        High Value
+                      </Badge>
+                      <HelpCircle className="h-4 w-4 text-muted-foreground" />
+                    </div>
+                  </div>
+                  <div className="mt-4">
+                    <div className="flex items-center justify-between text-sm">
+                      <span>Completeness:</span>
+                      <span>85%</span>
+                    </div>
+                    <Progress value={85} className="mt-2 h-2" />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
+        </div>
 
       <Card>
         <CardHeader>
@@ -712,209 +896,73 @@ function DataSources() {
         </CardContent>
       </Card>
 
-      <div className="grid gap-6 md:grid-cols-2">
-        <Card>
-          <CardHeader>
-            <CardTitle>Connected Data Sources</CardTitle>
-            <CardDescription>Status of data warehouse connections</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="rounded-lg border p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Database className="h-5 w-5 text-primary" />
-                    <div>
-                      <p className="font-medium">Member Demographics</p>
-                      <p className="text-xs text-muted-foreground">Primary member information database</p>
-                    </div>
-                  </div>
-                  <Badge className="bg-green-500">Connected</Badge>
-                </div>
-                <div className="mt-4">
-                  <div className="flex items-center justify-between text-sm">
-                    <span>Last sync: 15 minutes ago</span>
-                    <span>5.2M records</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="rounded-lg border p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Database className="h-5 w-5 text-primary" />
-                    <div>
-                      <p className="font-medium">Claims Data Warehouse</p>
-                      <p className="text-xs text-muted-foreground">Historical claims and diagnoses</p>
-                    </div>
-                  </div>
-                  <Badge className="bg-green-500">Connected</Badge>
-                </div>
-                <div className="mt-4">
-                  <div className="flex items-center justify-between text-sm">
-                    <span>Last sync: 2 hours ago</span>
-                    <span>28.7M records</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="rounded-lg border p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Database className="h-5 w-5 text-primary" />
-                    <div>
-                      <p className="font-medium">Clinical Data Repository</p>
-                      <p className="text-xs text-muted-foreground">Lab results and clinical measurements</p>
-                    </div>
-                  </div>
-                  <Badge className="bg-amber-500">Syncing</Badge>
-                </div>
-                <div className="mt-4">
-                  <div className="flex items-center justify-between text-sm">
-                    <span>Sync in progress...</span>
-                    <span>12.3M records</span>
-                  </div>
-                  <Progress value={68} className="mt-2 h-1" />
-                </div>
-              </div>
-
-              <div className="rounded-lg border p-4">
-                <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    <Database className="h-5 w-5 text-primary" />
-                    <div>
-                      <p className="font-medium">Marketing Engagement</p>
-                      <p className="text-xs text-muted-foreground">Campaign and conversion data</p>
-                    </div>
-                  </div>
-                  <Badge className="bg-red-500">Error</Badge>
-                </div>
-                <div className="mt-4">
-                  <div className="flex items-center justify-between text-sm">
-                    <span className="text-red-500">Authentication failed</span>
-                    <Button variant="outline" size="sm">
-                      Reconnect
-                    </Button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-
-        <Card>
-          <CardHeader>
-            <CardTitle>Claims Data Integration</CardTitle>
-            <CardDescription>Status of claims data processing</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="space-y-4">
-              <div className="flex items-center justify-between">
-                <h4 className="text-sm font-medium">ICD-10 Claims Processing</h4>
-                <Badge className="bg-green-500">Active</Badge>
-              </div>
-
-              <div className="space-y-4">
-                <div className="rounded-lg border p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">Diagnoses (ICD-10)</p>
-                      <p className="text-xs text-muted-foreground">Primary and secondary diagnoses codes</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Badge variant="outline" className="border-green-500 text-green-500">
-                        High Value
-                      </Badge>
-                      <HelpCircle className="h-4 w-4 text-muted-foreground" />
-                    </div>
-                  </div>
-                  <div className="mt-4">
-                    <div className="flex items-center justify-between text-sm">
-                      <span>Completeness:</span>
-                      <span>92%</span>
-                    </div>
-                    <Progress value={92} className="mt-2 h-2" />
-                  </div>
-                </div>
-
-                <div className="rounded-lg border p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">Pharmacy Claims</p>
-                      <p className="text-xs text-muted-foreground">Medication prescriptions and fills</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Badge variant="outline" className="border-green-500 text-green-500">
-                        High Value
-                      </Badge>
-                      <HelpCircle className="h-4 w-4 text-muted-foreground" />
-                    </div>
-                  </div>
-                  <div className="mt-4">
-                    <div className="flex items-center justify-between text-sm">
-                      <span>Completeness:</span>
-                      <span>87%</span>
-                    </div>
-                    <Progress value={87} className="mt-2 h-2" />
-                  </div>
-                </div>
-
-                <div className="rounded-lg border p-4">
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <p className="font-medium">Procedures (CPT/HCPCS)</p>
-                      <p className="text-xs text-muted-foreground">Medical procedures and services</p>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Badge variant="outline" className="border-green-500 text-green-500">
-                        High Value
-                      </Badge>
-                      <HelpCircle className="h-4 w-4 text-muted-foreground" />
-                    </div>
-                  </div>
-                  <div className="mt-4">
-                    <div className="flex items-center justify-between text-sm">
-                      <span>Completeness:</span>
-                      <span>85%</span>
-                    </div>
-                    <Progress value={85} className="mt-2 h-2" />
-                  </div>
-                </div>
-              </div>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
     </div>
   )
 }
 
 function MemberProfiles() {
+  const memberCohorts = [
+    {
+      audienceId: "medication",
+      audienceName: "Medication Adherence",
+      audienceIcon: Heart,
+      cohortName: "Tech-Savvy Seniors",
+      size: 1240,
+      response: "SMS + Email",
+      relevanceScore: 92,
+      color: "#4f46e5"
+    },
+    {
+      audienceId: "chronic",
+      audienceName: "Chronic Condition Management",
+      audienceIcon: Activity,
+      cohortName: "Multiple Condition Patients",
+      size: 720,
+      response: "Portal + Call",
+      relevanceScore: 87,
+      color: "#0ea5e9"
+    },
+    {
+      audienceId: "highrisk",
+      audienceName: "High-Risk Member Intervention",
+      audienceIcon: Zap,
+      cohortName: "Complex Conditions",
+      size: 290,
+      response: "Call + SMS",
+      relevanceScore: 78,
+      color: "#f59e0b"
+    }
+  ];
+
+  // Medication data
+  const medications = [
+    { name: "Metformin", dosage: "1000mg", startDate: "Jan 2018", lastFill: "Last week", adherence: "High (92%)", adherenceColor: "bg-green-500" },
+    { name: "Lisinopril", dosage: "20mg", startDate: "Mar 2016", lastFill: "2 weeks ago", adherence: "High (95%)", adherenceColor: "bg-green-500" },
+    { name: "Atorvastatin", dosage: "40mg", startDate: "Mar 2016", lastFill: "3 weeks ago", adherence: "Medium (78%)", adherenceColor: "bg-amber-500" }
+  ];
+
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-      <h2 className="text-2xl font-bold tracking-tight">Member Profiles</h2>
-        <div className="flex items-center gap-2 mt-2 md:mt-0">
-          <Input placeholder="Search members..." className="w-full md:w-[250px]" />
-          <Button size="sm" variant="outline">
-            <Filter className="mr-2 h-4 w-4" />
-            Filter
-          </Button>
-        </div>
+        <h2 className="text-2xl font-bold tracking-tight">Member Profiles</h2>
       </div>
 
       <Card>
         <CardHeader>
-          <CardTitle>Sample Member Profile</CardTitle>
-          <CardDescription>Example of an enriched member profile with integrated data</CardDescription>
+          <div className="flex items-center justify-between">
+            <CardTitle>Sample Member Details</CardTitle>
+            <Badge variant="outline" className="bg-blue-50 text-blue-700">High Value Member</Badge>
+          </div>
+          <CardDescription>Comprehensive member profile with integrated data from multiple sources</CardDescription>
         </CardHeader>
         <CardContent>
           <div className="space-y-6">
             <div className="flex flex-col md:flex-row gap-6">
+              {/* Left Column - Basic Info */}
               <div className="md:w-1/3 space-y-4">
                 <div className="flex items-center gap-4">
                   <Avatar className="h-16 w-16">
-                    <AvatarFallback className="text-lg">JD</AvatarFallback>
+                    <AvatarFallback className="text-lg bg-blue-100 text-blue-800">JD</AvatarFallback>
                   </Avatar>
                   <div>
                     <h4 className="text-xl font-bold">John Doe</h4>
@@ -1001,8 +1049,44 @@ function MemberProfiles() {
                     </div>
                   </div>
                 </div>
+
+                {/* NEW: Smart Cohort Memberships */}
+                <div className="rounded-lg border p-4 space-y-4">
+  <h5 className="font-medium">Smart Cohort Membership</h5>
+  <div className="space-y-3">
+    {memberCohorts.map((cohort, idx) => {
+      const IconComponent = cohort.audienceIcon;
+      
+      return (
+        <div key={idx} className="rounded border p-3" style={{ borderColor: cohort.color }}>
+          <div className="flex items-center gap-2 mb-2">
+            <div className="flex items-center justify-center h-8 w-8 rounded-full" style={{ backgroundColor: `${cohort.color}30` }}>
+              <IconComponent className="h-4 w-4" style={{ color: cohort.color }} />
+            </div>
+            <div>
+              <p className="text-sm font-medium">{cohort.audienceName}</p>
+              <p className="text-xs font-medium" style={{ color: cohort.color }}>{cohort.cohortName}</p>
+            </div>
+          </div>
+          <div className="flex items-center justify-between text-xs">
+            <span>Audience Size: {cohort.size.toLocaleString()}</span>
+            <span>Match Score: {cohort.relevanceScore}%</span>
+          </div>
+          <div className="mt-2 pt-2 border-t flex justify-between items-center">
+            <span className="text-xs font-medium">Best Channels: {cohort.response}</span>
+            <Button size="sm" variant="ghost" className="h-6 text-xs">
+              <ArrowRight className="h-3 w-3 mr-1" />
+              Manage
+            </Button>
+          </div>
+        </div>
+      );
+    })}
+  </div>
+</div>  
               </div>
 
+              {/* Right Column - Health Info */}
               <div className="md:w-2/3 space-y-4">
                 <div className="rounded-lg border p-4 space-y-4">
                   <div className="flex items-center justify-between">
@@ -1050,110 +1134,138 @@ function MemberProfiles() {
                       High Value Data
                     </Badge>
                   </div>
-                  <Table>
-                    <TableHeader>
-                      <TableRow>
-                        <TableHead>Medication</TableHead>
-                        <TableHead>Dosage</TableHead>
-                        <TableHead>Start Date</TableHead>
-                        <TableHead>Last Fill</TableHead>
-                        <TableHead>Adherence</TableHead>
-                      </TableRow>
-                    </TableHeader>
-                    <TableBody>
-                      <TableRow>
-                        <TableCell className="font-medium">Metformin</TableCell>
-                        <TableCell>1000mg</TableCell>
-                        <TableCell>Jan 2018</TableCell>
-                        <TableCell>Last week</TableCell>
-                        <TableCell>
-                          <Badge className="bg-green-500">High (92%)</Badge>
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell className="font-medium">Lisinopril</TableCell>
-                        <TableCell>20mg</TableCell>
-                        <TableCell>Mar 2016</TableCell>
-                        <TableCell>2 weeks ago</TableCell>
-                        <TableCell>
-                          <Badge className="bg-green-500">High (95%)</Badge>
-                        </TableCell>
-                      </TableRow>
-                      <TableRow>
-                        <TableCell className="font-medium">Atorvastatin</TableCell>
-                        <TableCell>40mg</TableCell>
-                        <TableCell>Mar 2016</TableCell>
-                        <TableCell>3 weeks ago</TableCell>
-                        <TableCell>
-                          <Badge className="bg-amber-500">Medium (78%)</Badge>
-                        </TableCell>
-                      </TableRow>
-                    </TableBody>
-                  </Table>
-                </div>
-
-                <div className="rounded-lg border p-4 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h5 className="font-medium">Clinical Signals</h5>
-                    <Badge variant="outline" className="border-amber-500 text-amber-500">
-                      Partial Data
-                    </Badge>
-                  </div>
-                  <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                    <div className="rounded-lg border p-3 text-center">
-                      <p className="text-xs text-muted-foreground">BMI</p>
-                      <p className="text-xl font-bold">32.4</p>
-                      <Badge className="mt-1 bg-red-500">High</Badge>
-                    </div>
-                    <div className="rounded-lg border p-3 text-center">
-                      <p className="text-xs text-muted-foreground">Blood Pressure</p>
-                      <p className="text-xl font-bold">142/88</p>
-                      <Badge className="mt-1 bg-amber-500">Elevated</Badge>
-                    </div>
-                    <div className="rounded-lg border p-3 text-center">
-                      <p className="text-xs text-muted-foreground">A1C</p>
-                      <p className="text-xl font-bold">7.2%</p>
-                      <Badge className="mt-1 bg-amber-500">Elevated</Badge>
-                    </div>
-                    <div className="rounded-lg border p-3 text-center">
-                      <p className="text-xs text-muted-foreground">LDL</p>
-                      <p className="text-xl font-bold">118</p>
-                      <Badge className="mt-1 bg-amber-500">Elevated</Badge>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="rounded-lg border p-4 space-y-4">
-                  <div className="flex items-center justify-between">
-                    <h5 className="font-medium">SDOH Factors</h5>
-                    <Badge variant="outline" className="border-amber-500 text-amber-500">
-                      Partial Data
-                    </Badge>
-                  </div>
-                  <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <div className="rounded-lg border p-3">
-                      <div className="flex items-center justify-between">
-                        <p className="text-sm font-medium">Transportation</p>
-                        <Badge className="bg-green-500">Low Risk</Badge>
+                  <div className="overflow-x-auto">
+                    <div className="min-w-full border rounded-md">
+                      <div className="grid grid-cols-5 bg-muted px-4 py-2 text-xs font-medium">
+                        <div>Medication</div>
+                        <div>Dosage</div>
+                        <div>Start Date</div>
+                        <div>Last Fill</div>
+                        <div>Adherence</div>
                       </div>
-                      <p className="mt-2 text-xs text-muted-foreground">
-                        Has reliable transportation for medical appointments
+                      <div className="divide-y">
+                        {medications.map((med, idx) => (
+                          <div key={idx} className="grid grid-cols-5 px-4 py-3 text-sm">
+                            <div className="font-medium">{med.name}</div>
+                            <div>{med.dosage}</div>
+                            <div>{med.startDate}</div>
+                            <div>{med.lastFill}</div>
+                            <div>
+                              <Badge className={med.adherenceColor}>{med.adherence}</Badge>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <Tabs defaultValue="clinical">
+                  <TabsList className="grid grid-cols-2 w-full">
+                    <TabsTrigger value="clinical">Clinical Signals</TabsTrigger>
+                    <TabsTrigger value="sdoh">SDOH Factors</TabsTrigger>
+                  </TabsList>
+
+                  <TabsContent value="clinical">
+                    <div className="rounded-lg border p-4 space-y-4">
+                      <div className="flex items-center justify-between">
+                        <h5 className="font-medium">Clinical Signals</h5>
+                        <Badge variant="outline" className="border-amber-500 text-amber-500">
+                          Partial Data
+                        </Badge>
+                      </div>
+                      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                        <div className="rounded-lg border p-3 text-center">
+                          <p className="text-xs text-muted-foreground">BMI</p>
+                          <p className="text-xl font-bold">32.4</p>
+                          <Badge className="mt-1 bg-red-500">High</Badge>
+                        </div>
+                        <div className="rounded-lg border p-3 text-center">
+                          <p className="text-xs text-muted-foreground">Blood Pressure</p>
+                          <p className="text-xl font-bold">142/88</p>
+                          <Badge className="mt-1 bg-amber-500">Elevated</Badge>
+                        </div>
+                        <div className="rounded-lg border p-3 text-center">
+                          <p className="text-xs text-muted-foreground">A1C</p>
+                          <p className="text-xl font-bold">7.2%</p>
+                          <Badge className="mt-1 bg-amber-500">Elevated</Badge>
+                        </div>
+                        <div className="rounded-lg border p-3 text-center">
+                          <p className="text-xs text-muted-foreground">LDL</p>
+                          <p className="text-xl font-bold">118</p>
+                          <Badge className="mt-1 bg-amber-500">Elevated</Badge>
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+
+                  <TabsContent value="sdoh">
+                    <div className="rounded-lg border p-4 space-y-4">
+                      <div className="flex items-center justify-between">
+                        <h5 className="font-medium">SDOH Factors</h5>
+                        <Badge variant="outline" className="border-amber-500 text-amber-500">
+                          Partial Data
+                        </Badge>
+                      </div>
+                      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div className="rounded-lg border p-3">
+                          <div className="flex items-center justify-between">
+                            <p className="text-sm font-medium">Transportation</p>
+                            <Badge className="bg-green-500">Low Risk</Badge>
+                          </div>
+                          <p className="mt-2 text-xs text-muted-foreground">
+                            Has reliable transportation for medical appointments
+                          </p>
+                        </div>
+                        <div className="rounded-lg border p-3">
+                          <div className="flex items-center justify-between">
+                            <p className="text-sm font-medium">Food Security</p>
+                            <Badge className="bg-green-500">Low Risk</Badge>
+                          </div>
+                          <p className="mt-2 text-xs text-muted-foreground">No indicators of food insecurity</p>
+                        </div>
+                        <div className="rounded-lg border p-3">
+                          <div className="flex items-center justify-between">
+                            <p className="text-sm font-medium">Health Literacy</p>
+                            <Badge className="bg-amber-500">Medium Risk</Badge>
+                          </div>
+                          <p className="mt-2 text-xs text-muted-foreground">
+                            May need additional education on condition management
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </TabsContent>
+                </Tabs>
+
+                {/* Campaign Recommendations Based on Cohort Data */}
+                <div className="rounded-lg border p-4 space-y-4">
+                  <div className="flex items-center justify-between">
+                    <h5 className="font-medium">Personalized Recommendations</h5>
+                    <Badge variant="outline" className="border-blue-500 text-blue-500">
+                      AI-Generated
+                    </Badge>
+                  </div>
+                  <div className="space-y-4">
+                    <div className="bg-blue-50 p-3 rounded-md">
+                      <div className="flex items-center mb-2">
+                        <Heart className="h-4 w-4 text-blue-600 mr-2" />
+                        <h6 className="font-medium text-blue-700">Medication Adherence Focus</h6>
+                      </div>
+                      <p className="text-sm text-blue-700">
+                        Based on "Tech-Savvy Seniors" cohort data, this member responds best to digital reminders.
+                        Consider SMS medication reminders with portal follow-up.
                       </p>
                     </div>
-                    <div className="rounded-lg border p-3">
-                      <div className="flex items-center justify-between">
-                        <p className="text-sm font-medium">Food Security</p>
-                        <Badge className="bg-green-500">Low Risk</Badge>
+                    
+                    <div className="bg-blue-50 p-3 rounded-md">
+                      <div className="flex items-center mb-2">
+                        <Zap className="h-4 w-4 text-blue-600 mr-2" />
+                        <h6 className="font-medium text-blue-700">High Risk Intervention Needed</h6>
                       </div>
-                      <p className="mt-2 text-xs text-muted-foreground">No indicators of food insecurity</p>
-                    </div>
-                    <div className="rounded-lg border p-3">
-                      <div className="flex items-center justify-between">
-                        <p className="text-sm font-medium">Health Literacy</p>
-                        <Badge className="bg-amber-500">Medium Risk</Badge>
-                      </div>
-                      <p className="mt-2 text-xs text-muted-foreground">
-                        May need additional education on condition management
+                      <p className="text-sm text-blue-700">
+                        Member matches "Complex Conditions" cohort profile with elevated clinical markers.
+                        Recommend care management outreach with personalized diabetes management plan.
                       </p>
                     </div>
                   </div>
@@ -1172,7 +1284,7 @@ function MemberProfiles() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }
 
 // Population Insights tab with the condition prevalence and demographics charts
@@ -1182,15 +1294,13 @@ function PopulationInsights() {
       name: "Acme Corporation", 
       members: 5240, 
       growth: 3.2, 
-      riskScore: 1.2,
       dataCompleteness: 92,
       topConditions: ["Hypertension", "Diabetes"]
     },
     { 
       name: "Global Health Inc", 
       members: 2180, 
-      growth: -1.5, 
-      riskScore: 1.8,
+      growth: -1.5,
       dataCompleteness: 85,
       topConditions: ["Hypertension", "Obesity"]
     },
@@ -1198,7 +1308,6 @@ function PopulationInsights() {
       name: "Midwest Manufacturing", 
       members: 4750, 
       growth: 5.4, 
-      riskScore: 2.4,
       dataCompleteness: 78,
       topConditions: ["Diabetes", "COPD"]
     }
@@ -1504,7 +1613,6 @@ function PopulationInsights() {
                 <th className="py-2 px-4 text-left">Employer</th>
                 <th className="py-2 px-4 text-left">Members</th>
                 <th className="py-2 px-4 text-left">Growth</th>
-                <th className="py-2 px-4 text-left">Avg. Risk Score</th>
                 <th className="py-2 px-4 text-left">Top Conditions</th>
                 <th className="py-2 px-4 text-left">Data Completeness</th>
                 <th className="py-2 px-4 text-right">Action</th>
@@ -1520,7 +1628,6 @@ function PopulationInsights() {
                       {employer.growth >= 0 ? "+" : ""}{employer.growth}%
                     </span>
                   </td>
-                  <td className="py-3 px-4">{employer.riskScore}</td>
                   <td className="py-3 px-4">
                     <div className="flex flex-wrap gap-1">
                       {employer.topConditions.map((condition, i) => (
@@ -1570,11 +1677,6 @@ function PopulationInsights() {
               <h5 className="font-medium">High-Risk Care Management</h5>
             </div>
             <p className="text-sm text-gray-600">Target 320 members with multiple chronic conditions for enhanced care management program.</p>
-            <div className="mt-4">
-              <span className="inline-block px-2 py-1 bg-blue-100 text-blue-800 text-xs rounded-full">
-                Potential savings: $520K
-              </span>
-            </div>
           </div>
           
           <div className="p-4 border rounded-md">
@@ -1588,11 +1690,6 @@ function PopulationInsights() {
               <h5 className="font-medium">Diabetes Management Program</h5>
             </div>
             <p className="text-sm text-gray-600">Implement targeted diabetes program for 940 members with uncontrolled A1C levels.</p>
-            <div className="mt-4">
-              <span className="inline-block px-2 py-1 bg-green-100 text-green-800 text-xs rounded-full">
-                Potential savings: $1.2M
-              </span>
-            </div>
           </div>
           
           <div className="p-4 border rounded-md">
@@ -1607,11 +1704,6 @@ function PopulationInsights() {
               <h5 className="font-medium">Preventive Screening Campaign</h5>
             </div>
             <p className="text-sm text-gray-600">Launch targeted outreach for 1,850 members overdue for preventive screenings.</p>
-            <div className="mt-4">
-              <span className="inline-block px-2 py-1 bg-purple-100 text-purple-800 text-xs rounded-full">
-                Potential savings: $760K
-              </span>
-            </div>
           </div>
         </div>
       </div>

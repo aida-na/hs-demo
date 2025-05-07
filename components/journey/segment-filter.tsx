@@ -13,7 +13,7 @@ interface SegmentFilterProps {
 }
 
 const availableSegments = [
-  { id: "new-members", name: "New Members", category: "Membership" },
+  { id: "Tech-Savvy Seniors", name: "Tech-Savvy Seniors", category: "Cohorts" },
   { id: "age-30-45", name: "Age 30-45", category: "Demographics" },
   { id: "age-46-65", name: "Age 46-65", category: "Demographics" },
   { id: "age-65-plus", name: "Age 65+", category: "Demographics" },
