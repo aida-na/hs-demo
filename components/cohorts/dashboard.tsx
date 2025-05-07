@@ -14,7 +14,7 @@ import {
   Users,
   Zap,
   Filter,
-  MessageCircle,
+  MessageCircle,    
   ArrowRight
 } from "lucide-react"
 
@@ -166,7 +166,7 @@ export default function Dashboard() {
             }}
           >
             <div className="flex items-center justify-between mb-4">
-              <TabsList className="h-auto p-1">
+              <TabsList className="h-auto p-1 bg-gray-200">
                 {audiences.slice(0, 5).map((audience) => (
                   <TabsTrigger key={audience.id} value={audience.id} className="flex items-center gap-2 px-3 py-2">
                     <audience.icon className="h-4 w-4" />
