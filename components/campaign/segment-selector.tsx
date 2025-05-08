@@ -52,7 +52,7 @@ const audiences: Audience[] = [
     icon: Heart,
     cohorts: [
       { id: "tech-seniors", name: "Tech-Savvy Seniors", size: 1240, response: "SMS + Email" },
-      { id: "traditional", name: "Traditional Patients", size: 980, response: "Call + Mail" },
+      { id: "traditional", name: "Traditional Memberss", size: 980, response: "Call + Mail" },
       { id: "busy-professionals", name: "Busy Professionals", size: 675, response: "Email + Portal" },
       { id: "new-rx", name: "New Prescription Users", size: 355, response: "SMS + Call" }
     ]
@@ -274,18 +274,6 @@ export default function AudienceSelector() {
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row gap-6">
         <div className="w-full md:w-2/3">
-          <div className="mb-4">
-            <div className="relative">
-              <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
-              <Input
-                type="search"
-                placeholder="Search..."
-                className="pl-8"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-              />
-            </div>
-          </div>
 
           <Tabs value={currentTab} onValueChange={setCurrentTab}>
             <TabsList className="mb-4">
@@ -440,10 +428,7 @@ export default function AudienceSelector() {
         <div className="w-full md:w-1/3">
           <Card>
             <CardContent className="pt-6">
-              <h3 className="text-lg font-medium mb-2">Your Smart Audience</h3>
-              <p className="text-sm text-muted-foreground mb-4">
-                Combine audiences, cohorts, and behaviors to create your target group
-              </p>
+              <h3 className="text-lg font-medium mb-2">Your Target Group</h3>
 
               {allSelections.length === 0 ? (
                 <p className="text-muted-foreground text-sm">No selections yet</p>
@@ -560,11 +545,6 @@ export default function AudienceSelector() {
                       {calculateTotalMembers().toLocaleString()} members
                     </span>
                   </div>
-                  
-                  <Button className="w-full">
-                    <Zap className="mr-2 h-4 w-4" />
-                    Activate Audience
-                  </Button>
                 </div>
               )}
             </CardContent>

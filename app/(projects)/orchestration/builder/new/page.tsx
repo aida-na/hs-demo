@@ -68,7 +68,7 @@ const audienceGoals: AudienceGoal[] = [
     description: "Improve compliance with prescribed medications",
     icon: Heart,
     count: 3250,
-    recommendedFor: ["Chronic conditions", "Elderly patients"],
+    recommendedFor: ["Chronic conditions", "Elderly members"],
   },
   {
     id: "caregap",
@@ -84,12 +84,12 @@ const audienceGoals: AudienceGoal[] = [
     description: "Encourage preventive care and regular check-ups",
     icon: Calendar,
     count: 3420,
-    recommendedFor: ["Medicare patients", "New enrollees"],
+    recommendedFor: ["Medicare members", "New enrollees"],
   },
   {
     id: "onboarding",
     title: "New Member Onboarding",
-    description: "Welcome new patients and guide them through initial steps",
+    description: "Welcome new members and guide them through initial steps",
     icon: UserPlus,
     count: 1240,
     recommendedFor: ["Recent enrollees", "Plan changes"],
@@ -322,11 +322,6 @@ export default function NewCampaign() {
                           <h3 className="font-semibold text-lg mb-1">{goal.title}</h3>
                           <p className="text-sm text-muted-foreground mb-3">{goal.description}</p>
                           <div className="flex flex-wrap gap-1 mb-2">
-                            {goal.recommendedFor?.map((tag, i) => (
-                              <Badge key={i} variant="outline" className="text-xs bg-primary/5">
-                                {tag}
-                              </Badge>
-                            ))}
                           </div>
                           <Badge variant="outline" className="text-xs">
                             {goal.count.toLocaleString()} members
@@ -373,7 +368,7 @@ export default function NewCampaign() {
                       <Users className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <CardTitle>Select Patient Segments</CardTitle>
+                      <CardTitle>Select Member Segments</CardTitle>
                       <CardDescription className="mt-1">
                         Define your target audience by selecting patient segments
                       </CardDescription>
@@ -383,35 +378,11 @@ export default function NewCampaign() {
                 <CardContent className="pt-6">
                   {/* Enhanced Audience Selector with Recommendations */}
                   <div className="mb-6">
-                    <div className="bg-amber-50 border border-amber-200 rounded-md p-3 mb-6 flex items-start">
-                      <AlertCircle className="h-5 w-5 text-amber-500 mr-2 mt-0.5 flex-shrink-0" />
-                      <div>
-                        <p className="text-sm font-medium text-amber-800">Recommended Segments</p>
-                        <p className="text-sm text-amber-700">
-                          Based on your selected goal of "{selectedGoalDetails?.title}", we recommend including segments
-                          with chronic conditions and medication history.
-                        </p>
-                      </div>
-                    </div>
 
                     <AudienceSelector />
                   </div>
 
                   {/* Segment Combination Logic */}
-                  <div className="mb-6">
-                    <h3 className="text-sm font-medium mb-2">Segment Combination Logic</h3>
-                    <div className="flex gap-2 mb-4">
-                      <Button variant="outline" size="sm" className="bg-primary/5 border-primary/20">
-                        Include All (AND)
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        Include Any (OR)
-                      </Button>
-                      <Button variant="outline" size="sm">
-                        Custom Logic
-                      </Button>
-                    </div>
-                  </div>
                 </CardContent>
                 <CardFooter className="flex justify-between border-t pt-4">
                   <Button variant="outline" className="gap-2" onClick={() => setActiveTab("goal")}>
@@ -446,29 +417,6 @@ export default function NewCampaign() {
                   </div>
                 </CardHeader>
                 <CardContent className="pt-6">
-                  {/* Campaign Summary Cards */}
-                  <div className="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
-                    <Card className="md:col-span-3">
-                      <CardContent className="pt-6">
-                        <h2 className="text-xl font-semibold mb-2">Campaign Goal</h2>
-                        <p className="text-muted-foreground">{selectedGoalDetails?.title}</p>
-                      </CardContent>
-                    </Card>
-
-                    <Card>
-                      <CardContent className="pt-6">
-                        <h2 className="text-xl font-semibold mb-2">Selected Segments</h2>
-                        <ul className="space-y-1">
-                          {selectedSegments.map((segment, index) => (
-                            <li key={index} className="flex items-center text-sm">
-                              <Check className="h-4 w-4 mr-2 text-green-500" />
-                              {segment.name}
-                            </li>
-                          ))}
-                        </ul>
-                      </CardContent>
-                    </Card>
-                  </div>
 
                   {/* Journey Builder Interface - Conditionally rendering builder or configuration */}
                   {currentStep === "builder" && (

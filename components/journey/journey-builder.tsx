@@ -200,8 +200,6 @@ export default function JourneyBuilder() {
         return "SMS"
       case "call":
         return "Phone Call"
-      case "push":
-        return "Push Notification"
       case "mail":
         return "Direct Mail"
     }
