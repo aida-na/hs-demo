@@ -37,6 +37,7 @@ import {
   Clock,
   Send,
   CheckCircle,
+  Settings,
 } from "lucide-react"
 import AudienceSelector from "@/components/campaign/segment-selector"
 import JourneyBuilder from "@/components/journey/journey-builder"
@@ -45,7 +46,7 @@ import CampaignConfiguration from "@/components/campaign/campaign-configuration"
 import { useRouter } from "next/navigation"
 
 // Define types for our data structures
-type TabValue = "goal" | "segments" | "journey" | "review"
+type TabValue = "goal" | "segments" | "journey" | "configuration" | "review"
 type AudienceGoal = {
   id: string
   title: string
@@ -143,7 +144,6 @@ export default function NewCampaign() {
   
   // Journey Builder specific states
   const [journeyActiveTab, setJourneyActiveTab] = useState("scratch") 
-  const [currentStep, setCurrentStep] = useState("builder")
   const [showSuccessDialog, setShowSuccessDialog] = useState(false)
   
   const router = useRouter()
@@ -160,8 +160,10 @@ export default function NewCampaign() {
         return 1
       case "journey":
         return 2
-      case "review":
+      case "configuration":
         return 3
+      case "review":
+        return 4
       default:
         return 0
     }
@@ -203,7 +205,7 @@ export default function NewCampaign() {
           </div>
         </div>
 
-{/* Enhanced Progress Visualization - Replace with this code */}
+{/* Enhanced Progress Visualization - now with 5 steps */}
 <div className="relative">
   {/* The main progress track - positioned exactly */}
   <div className="absolute top-6 left-0 right-0 h-0.5 bg-gray-200"></div>
@@ -212,7 +214,7 @@ export default function NewCampaign() {
   <div 
     className="absolute top-6 left-0 h-0.5 bg-primary transition-all duration-500"
     style={{ 
-      width: activeTab === "goal" ? "0%" : `calc(${(getActiveStepNumber()) / (3)} * 100%)`,
+      width: activeTab === "goal" ? "0%" : `calc(${(getActiveStepNumber()) / (4)} * 100%)`,
     }}
   ></div>
   
@@ -222,6 +224,7 @@ export default function NewCampaign() {
       { step: "Campaign Goal", value: "goal" as TabValue, icon: <Target className="h-5 w-5" /> },
       { step: "Audience Selection", value: "segments" as TabValue, icon: <Users className="h-5 w-5" /> },
       { step: "Journey Builder", value: "journey" as TabValue, icon: <ArrowRight className="h-5 w-5" /> },
+      { step: "Campaign Configuration", value: "configuration" as TabValue, icon: <Settings className="h-5 w-5" /> },
       { step: "Review & Launch", value: "review" as TabValue, icon: <Check className="h-5 w-5" /> },
     ].map((item, index) => {
       const isActive = activeTab === item.value;
@@ -278,6 +281,7 @@ export default function NewCampaign() {
               <TabsTrigger value="goal">Campaign Goal</TabsTrigger>
               <TabsTrigger value="segments">Select Segments</TabsTrigger>
               <TabsTrigger value="journey">Build Journey</TabsTrigger>
+              <TabsTrigger value="configuration">Configuration</TabsTrigger>
               <TabsTrigger value="review">Review & Launch</TabsTrigger>
             </TabsList>
 
@@ -400,7 +404,7 @@ export default function NewCampaign() {
               </Card>
             </TabsContent>
 
-            {/* Journey Tab Content - Integrated with Journey Builder from the second file */}
+            {/* Journey Tab Content - Simplified without configuration */}
             <TabsContent value="journey">
               <Card className="border-t-4 border-t-primary">
                 <CardHeader className="pb-0">
@@ -418,77 +422,73 @@ export default function NewCampaign() {
                 </CardHeader>
                 <CardContent className="pt-6">
 
-                  {/* Journey Builder Interface - Conditionally rendering builder or configuration */}
-                  {currentStep === "builder" && (
-                    <>
-                      <Tabs value={journeyActiveTab} onValueChange={setJourneyActiveTab} className="mb-10">
-                        <TabsList className="grid w-full grid-cols-2">
-                          <TabsTrigger value="scratch">Start from Scratch</TabsTrigger>
-                          <TabsTrigger value="template">Choose a Template</TabsTrigger>
-                        </TabsList>
+                  {/* Journey Builder Interface */}
+                  <Tabs value={journeyActiveTab} onValueChange={setJourneyActiveTab} className="mb-10">
+                    <TabsList className="grid w-full grid-cols-2">
+                      <TabsTrigger value="scratch">Start from Scratch</TabsTrigger>
+                      <TabsTrigger value="template">Choose a Template</TabsTrigger>
+                    </TabsList>
 
-                        <TabsContent value="scratch">
-                          <Card>
-                            <CardContent className="pt-6">
-                              <JourneyBuilder />
+                    <TabsContent value="scratch">
+                      <Card>
+                        <CardContent className="pt-6">
+                          <JourneyBuilder />
+                        </CardContent>
+                      </Card>
+                    </TabsContent>
 
-                              <div className="flex justify-end mt-8">
-                                <Button variant="outline" className="mr-2">
-                                  Save Draft
-                                </Button>
-                                <Button onClick={() => setCurrentStep("configure")}>Continue to Configuration</Button>
-                              </div>
-                            </CardContent>
-                          </Card>
-                        </TabsContent>
+                    <TabsContent value="template">
+                      <Card>
+                        <CardContent className="pt-6">
+                          <JourneyTemplates />
 
-                        <TabsContent value="template">
-                          <Card>
-                            <CardContent className="pt-6">
-                              <JourneyTemplates />
-
-                              <div className="flex justify-end mt-8">
-                                <Button onClick={() => setJourneyActiveTab("scratch")}>Customize Selected Template</Button>
-                              </div>
-                            </CardContent>
-                          </Card>
-                        </TabsContent>
-                      </Tabs>
-                    </>
-                  )}
-
-                  {/* Campaign Configuration Step */}
-                  {currentStep === "configure" && (
-                    <Card>
-                      <CardContent className="pt-6">
-                        <h2 className="text-xl font-semibold mb-6">Campaign Configuration</h2>
-
-                        <CampaignConfiguration />
-                        <div className="flex justify-between mt-8">
-                          <Button variant="outline" className="gap-2" onClick={() => setCurrentStep("builder")}>
-                            <ArrowLeft className="h-4 w-4" />
-                            Back to Journey Builder
-                          </Button>
-
-                          <div className="space-x-2">
-                            <Button variant="outline" className="gap-2">
-                              <Save className="h-4 w-4" />
-                              Save as Draft
-                            </Button>
-                            <Button className="gap-2" onClick={handleLaunchCampaign}>
-                              <Send className="h-4 w-4" />
-                              Launch Campaign
-                            </Button>
+                          <div className="flex justify-end mt-8">
+                            <Button onClick={() => setJourneyActiveTab("scratch")}>Customize Selected Template</Button>
                           </div>
-                        </div>
-                      </CardContent>
-                    </Card>
-                  )}
+                        </CardContent>
+                      </Card>
+                    </TabsContent>
+                  </Tabs>
                 </CardContent>
                 <CardFooter className="flex justify-between border-t pt-4">
                   <Button variant="outline" className="gap-2" onClick={() => setActiveTab("segments")}>
                     <ArrowLeft className="h-4 w-4" />
                     Back to Segments
+                  </Button>
+                  <div className="flex gap-2">
+                    <Button variant="outline">Save Draft</Button>
+                    <Button className="gap-2" onClick={() => setActiveTab("configuration")}>
+                      Continue to Configuration
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </div>
+                </CardFooter>
+              </Card>
+            </TabsContent>
+
+            {/* NEW Configuration Tab Content */}
+            <TabsContent value="configuration">
+              <Card className="border-t-4 border-t-primary">
+                <CardHeader className="pb-0">
+                  <div className="flex items-center">
+                    <div className="flex items-center justify-center h-10 w-10 rounded-full bg-primary/10 mr-4">
+                      <Settings className="h-5 w-5 text-primary" />
+                    </div>
+                    <div>
+                      <CardTitle>Campaign Configuration</CardTitle>
+                      <CardDescription className="mt-1">
+                        Set up the details and parameters for your campaign
+                      </CardDescription>
+                    </div>
+                  </div>
+                </CardHeader>
+                <CardContent className="pt-6">
+                  <CampaignConfiguration />
+                </CardContent>
+                <CardFooter className="flex justify-between border-t pt-4">
+                  <Button variant="outline" className="gap-2" onClick={() => setActiveTab("journey")}>
+                    <ArrowLeft className="h-4 w-4" />
+                    Back to Journey Builder
                   </Button>
                   <div className="flex gap-2">
                     <Button variant="outline">Save Draft</Button>
@@ -627,9 +627,9 @@ export default function NewCampaign() {
                   </div>
                 </CardContent>
                 <CardFooter className="flex justify-between border-t pt-4">
-                  <Button variant="outline" className="gap-2" onClick={() => setActiveTab("journey")}>
+                  <Button variant="outline" className="gap-2" onClick={() => setActiveTab("configuration")}>
                     <ArrowLeft className="h-4 w-4" />
-                    Back to Journey
+                    Back to Configuration
                   </Button>
                   <div className="flex gap-2">
                     <Button variant="outline">Save as Draft</Button>

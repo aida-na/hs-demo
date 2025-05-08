@@ -22,7 +22,7 @@ export default function CampaignConfiguration() {
         <div className="space-y-4">
           <div className="space-y-2">
             <Label htmlFor="campaign-name">Campaign Name</Label>
-            <Input id="campaign-name" placeholder="Enter campaign name" defaultValue="New Member Onboarding" />
+            <Input id="campaign-name" placeholder="Enter campaign name" defaultValue="Medication Adherence Campaign" />
           </div>
 
           <div className="space-y-2">
@@ -30,7 +30,7 @@ export default function CampaignConfiguration() {
             <Textarea
               id="campaign-description"
               placeholder="Enter campaign description"
-              defaultValue="A multi-step journey to welcome new members and guide them through initial steps of their health plan."
+              defaultValue="A multi-step journey to improve medication adherence of your members."
               rows={4}
             />
           </div>
