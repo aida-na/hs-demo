@@ -131,6 +131,7 @@ const journeyTemplates = [
 ]
 
 export default function NewCampaign() {
+  // All hooks must be at the top of the component
   const [selectedGoal, setSelectedGoal] = useState<string>("medication")
   const [activeTab, setActiveTab] = useState<TabValue>("goal")
   const [selectedSegments, setSelectedSegments] = useState<Segment[]>([
@@ -150,6 +151,11 @@ export default function NewCampaign() {
   // Journey Builder specific states
   const [journeyActiveTab, setJourneyActiveTab] = useState("scratch") 
   const [showSuccessDialog, setShowSuccessDialog] = useState(false)
+  
+  // NEW: Audience selection states
+  const [selectedAudiences, setSelectedAudiences] = useState<string[]>([])
+  const [selectedCohorts, setSelectedCohorts] = useState<string[]>([])
+  const [selectedBehaviors, setSelectedBehaviors] = useState<string[]>([])
   
   const router = useRouter()
 
@@ -210,70 +216,70 @@ export default function NewCampaign() {
           </div>
         </div>
 
-{/* Enhanced Progress Visualization - now with 5 steps */}
-<div className="relative">
-  {/* The main progress track - positioned exactly */}
-  <div className="absolute top-6 left-0 right-0 h-0.5 bg-gray-200"></div>
-  
-  {/* The filled progress - using calculation to precisely align with step centers */}
-  <div 
-    className="absolute top-6 left-0 h-0.5 bg-primary transition-all duration-500"
-    style={{ 
-      width: activeTab === "goal" ? "0%" : `calc(${(getActiveStepNumber()) / (4)} * 100%)`,
-    }}
-  ></div>
-  
-  {/* Step indicators - precisely positioned */}
-  <div className="relative flex justify-between">
-    {[
-      { step: "Campaign Goal", value: "goal" as TabValue, icon: <Target className="h-5 w-5" /> },
-      { step: "Audience Selection", value: "segments" as TabValue, icon: <Users className="h-5 w-5" /> },
-      { step: "Journey Builder", value: "journey" as TabValue, icon: <ArrowRight className="h-5 w-5" /> },
-      { step: "Campaign Configuration", value: "configuration" as TabValue, icon: <Settings className="h-5 w-5" /> },
-      { step: "Review & Launch", value: "review" as TabValue, icon: <Check className="h-5 w-5" /> },
-    ].map((item, index) => {
-      const isActive = activeTab === item.value;
-      const isCompleted = getActiveStepNumber() > index;
-      
-      return (
-        <div
-          key={index}
-          className="flex flex-col items-center cursor-pointer"
-          onClick={() => handleTabChange(item.value as TabValue)}
-        >
-          {/* Step circle - positioned exactly at center of progress bar */}
-          <div 
-            className={`
-              relative z-10 flex items-center justify-center w-12 h-12 rounded-full 
-              border-2 transition-all duration-300
-              ${isActive 
-                ? 'bg-primary border-primary text-white'
-                : isCompleted
-                  ? 'bg-emerald-700 border-emerald-700 text-white'
-                  : 'bg-white border-gray-300 text-gray-400'}
-              shadow-sm
-            `}
-          >
-            {isCompleted ? <Check className="h-6 w-6" /> : item.icon}
-          </div>
+        {/* Enhanced Progress Visualization - now with 5 steps */}
+        <div className="relative">
+          {/* The main progress track - positioned exactly */}
+          <div className="absolute top-6 left-0 right-0 h-0.5 bg-gray-200"></div>
           
-          {/* Step label */}
-          <span className={`
-            mt-2 text-sm text-center whitespace-nowrap
-            ${isActive 
-              ? 'font-medium text-primary'
-              : isCompleted
-                ? 'font-medium text-emerald-700'
-                : 'text-gray-500'}
-            hidden md:block
-          `}>
-            {item.step}
-          </span>
+          {/* The filled progress - using calculation to precisely align with step centers */}
+          <div 
+            className="absolute top-6 left-0 h-0.5 bg-primary transition-all duration-500"
+            style={{ 
+              width: activeTab === "goal" ? "0%" : `calc(${(getActiveStepNumber()) / (4)} * 100%)`,
+            }}
+          ></div>
+          
+          {/* Step indicators - precisely positioned */}
+          <div className="relative flex justify-between">
+            {[
+              { step: "Campaign Goal", value: "goal" as TabValue, icon: <Target className="h-5 w-5" /> },
+              { step: "Audience Selection", value: "segments" as TabValue, icon: <Users className="h-5 w-5" /> },
+              { step: "Journey Builder", value: "journey" as TabValue, icon: <ArrowRight className="h-5 w-5" /> },
+              { step: "Campaign Configuration", value: "configuration" as TabValue, icon: <Settings className="h-5 w-5" /> },
+              { step: "Review & Launch", value: "review" as TabValue, icon: <Check className="h-5 w-5" /> },
+            ].map((item, index) => {
+              const isActive = activeTab === item.value;
+              const isCompleted = getActiveStepNumber() > index;
+              
+              return (
+                <div
+                  key={index}
+                  className="flex flex-col items-center cursor-pointer"
+                  onClick={() => handleTabChange(item.value as TabValue)}
+                >
+                  {/* Step circle - positioned exactly at center of progress bar */}
+                  <div 
+                    className={`
+                      relative z-10 flex items-center justify-center w-12 h-12 rounded-full 
+                      border-2 transition-all duration-300
+                      ${isActive 
+                        ? 'bg-primary border-primary text-white'
+                        : isCompleted
+                          ? 'bg-emerald-700 border-emerald-700 text-white'
+                          : 'bg-white border-gray-300 text-gray-400'}
+                      shadow-sm
+                    `}
+                  >
+                    {isCompleted ? <Check className="h-6 w-6" /> : item.icon}
+                  </div>
+                  
+                  {/* Step label */}
+                  <span className={`
+                    mt-2 text-sm text-center whitespace-nowrap
+                    ${isActive 
+                      ? 'font-medium text-primary'
+                      : isCompleted
+                        ? 'font-medium text-emerald-700'
+                        : 'text-gray-500'}
+                    hidden md:block
+                  `}>
+                    {item.step}
+                  </span>
+                </div>
+              );
+            })}
+          </div>
         </div>
-      );
-    })}
-  </div>
-</div>
       </div>
 
       {/* Main Content with Sidebar Layout */}
@@ -471,8 +477,14 @@ export default function NewCampaign() {
                 <CardContent className="pt-6">
                   {/* Enhanced Audience Selector with Recommendations */}
                   <div className="mb-6">
-
-                    <AudienceSelector />
+                    <AudienceSelector
+                      initialSelectedAudiences={selectedAudiences}
+                      initialSelectedCohorts={selectedCohorts}
+                      initialSelectedBehaviors={selectedBehaviors}
+                      onAudienceChange={setSelectedAudiences}
+                      onCohortsChange={setSelectedCohorts}
+                      onBehaviorsChange={setSelectedBehaviors}
+                    />
                   </div>
 
                   {/* Segment Combination Logic */}
@@ -493,7 +505,7 @@ export default function NewCampaign() {
               </Card>
             </TabsContent>
 
-            {/* Journey Tab Content - Simplified without configuration */}
+            {/* Journey Tab Content - Updated to pass props */}
             <TabsContent value="journey">
               <Card className="border-t-4 border-t-primary">
                 <CardHeader className="pb-0">
@@ -521,7 +533,11 @@ export default function NewCampaign() {
                     <TabsContent value="scratch">
                       <Card>
                         <CardContent className="pt-6">
-                          <JourneyBuilder />
+                          <JourneyBuilder
+                            selectedAudiences={selectedAudiences}
+                            selectedCohorts={selectedCohorts}
+                            selectedBehaviors={selectedBehaviors}
+                          />
                         </CardContent>
                       </Card>
                     </TabsContent>
@@ -761,7 +777,7 @@ export default function NewCampaign() {
               Create Another Campaign
             </Button>
           </DialogFooter>
-        </DialogContent>
+        </DialogContent>C
       </Dialog>
     </div>
   )

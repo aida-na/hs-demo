@@ -138,13 +138,42 @@ const behaviors = [
   { id: "appointment-due", name: "Appointment Due", count: 2987, category: "Care Gaps", icon: CalendarIcon }
 ]
 
-export default function AudienceSelector() {
-  // Initialize with medication cohorts selected by default
-  const [selectedAudiences, setSelectedAudiences] = useState<string[]>(["medication"])
-  const [selectedCohorts, setSelectedCohorts] = useState<string[]>(["tech-seniors", "busy-professionals"])
-  const [selectedBehaviors, setSelectedBehaviors] = useState<string[]>([])
+interface AudienceSelectorProps {
+  initialSelectedAudiences?: string[]
+  initialSelectedCohorts?: string[]
+  initialSelectedBehaviors?: string[]
+  onAudienceChange?: (audiences: string[]) => void
+  onCohortsChange?: (cohorts: string[]) => void
+  onBehaviorsChange?: (behaviors: string[]) => void
+}
+
+export default function AudienceSelector({
+  initialSelectedAudiences = [],
+  initialSelectedCohorts = [],
+  initialSelectedBehaviors = [],
+  onAudienceChange,
+  onCohortsChange,
+  onBehaviorsChange,
+}: AudienceSelectorProps) {
+  // Initialize with props or default values
+  const [selectedAudiences, setSelectedAudiences] = useState<string[]>(initialSelectedAudiences)
+  const [selectedCohorts, setSelectedCohorts] = useState<string[]>(initialSelectedCohorts)
+  const [selectedBehaviors, setSelectedBehaviors] = useState<string[]>(initialSelectedBehaviors)
   const [searchTerm, setSearchTerm] = useState("")
   const [currentTab, setCurrentTab] = useState("audiences")
+
+   // Update parent when selections change
+   useEffect(() => {
+    onAudienceChange?.(selectedAudiences)
+  }, [selectedAudiences, onAudienceChange])
+
+  useEffect(() => {
+    onCohortsChange?.(selectedCohorts)
+  }, [selectedCohorts, onCohortsChange])
+
+  useEffect(() => {
+    onBehaviorsChange?.(selectedBehaviors)
+  }, [selectedBehaviors, onBehaviorsChange])
 
   // Combined all selections for display in the right panel
   const allSelections = [...selectedAudiences, ...selectedCohorts, ...selectedBehaviors]

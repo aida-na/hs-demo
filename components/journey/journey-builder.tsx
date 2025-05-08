@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@
 import { Badge } from "@/components/ui/badge"
 import { AlertCircle, Edit, Mail, MessageSquare, Phone, Plus, Smartphone, Trash, Users, Check } from "lucide-react"
 import ContentStudio from "./content-studio"
-import SegmentFilter from "./segment-filter"
+import AudienceSelector from "@/components/campaign/segment-selector"
 
 // Types for our journey steps
 type ChannelType = "email" | "sms" | "call" | "push" | "mail"
@@ -34,7 +34,18 @@ type Step = {
   channels: Channel[]
 }
 
-export default function JourneyBuilder() {
+interface JourneyBuilderProps {
+  selectedAudiences?: string[]
+  selectedCohorts?: string[]
+  selectedBehaviors?: string[]
+}
+
+export default function JourneyBuilder({
+  selectedAudiences = [],
+  selectedCohorts = [],
+  selectedBehaviors = [],
+}: JourneyBuilderProps) {
+  // Initialize the first step with the selected segments from audience selection
   const [steps, setSteps] = useState<Step[]>([
     {
       id: "step1",
@@ -49,7 +60,8 @@ export default function JourneyBuilder() {
             body: "Thank you for joining our health plan. Here's what you need to know to get started.",
             isAiGenerated: true,
           },
-          segments: ["new-members", "age-30-45", "chronic"],
+          // Pre-populate with selected audiences, cohorts, and behaviors
+          segments: [...selectedAudiences, ...selectedCohorts, ...selectedBehaviors],
         },
       ],
     },
@@ -59,6 +71,11 @@ export default function JourneyBuilder() {
   const [activeChannel, setActiveChannel] = useState<{ stepId: string; channelIndex: number } | null>(null)
   const [showContentStudio, setShowContentStudio] = useState(false)
   const [showSegmentFilter, setShowSegmentFilter] = useState(false)
+  
+  // State for the audience dialog
+  const [dialogAudiences, setDialogAudiences] = useState<string[]>([])
+  const [dialogCohorts, setDialogCohorts] = useState<string[]>([])
+  const [dialogBehaviors, setDialogBehaviors] = useState<string[]>([])
 
   // Add a new step to the journey
   const addStep = () => {
@@ -85,7 +102,8 @@ export default function JourneyBuilder() {
             {
               type: channelType,
               content: null,
-              segments: [],
+              // Pre-populate new channels with selected segments
+              segments: [...selectedAudiences, ...selectedCohorts, ...selectedBehaviors],
             },
           ],
         }
@@ -167,10 +185,27 @@ export default function JourneyBuilder() {
     }
   }
 
-  // Save segments from the segment filter
-  const saveSegments = (segments: string[]) => {
+  // When opening the segment dialog, initialize with current channel segments
+  useEffect(() => {
+    if (showSegmentFilter && activeChannel) {
+      const currentSegments = getActiveChannelSegments() || []
+      
+      // Split segments into audiences, cohorts, and behaviors
+      const audiencesList = currentSegments.filter(seg => selectedAudiences.includes(seg))
+      const cohortsList = currentSegments.filter(seg => selectedCohorts.includes(seg))
+      const behaviorsList = currentSegments.filter(seg => selectedBehaviors.includes(seg))
+      
+      setDialogAudiences(audiencesList)
+      setDialogCohorts(cohortsList)
+      setDialogBehaviors(behaviorsList)
+    }
+  }, [showSegmentFilter, activeChannel])
+
+  // Save segments by combining all selections
+  const saveSegments = () => {
     if (activeChannel) {
-      updateChannel(activeChannel.stepId, activeChannel.channelIndex, { segments })
+      const allSegments = [...dialogAudiences, ...dialogCohorts, ...dialogBehaviors]
+      updateChannel(activeChannel.stepId, activeChannel.channelIndex, { segments: allSegments })
       setShowSegmentFilter(false)
     }
   }
@@ -464,16 +499,30 @@ export default function JourneyBuilder() {
         </DialogContent>
       </Dialog>
 
-      {/* Segment Filter Dialog */}
+      {/* Audience Selector Dialog instead of SegmentFilter */}
       <Dialog open={showSegmentFilter} onOpenChange={setShowSegmentFilter}>
-        <DialogContent>
+        <DialogContent className="max-w-6xl">
           <DialogHeader>
-            <DialogTitle>Segment Filter</DialogTitle>
+            <DialogTitle>Select Audience for Channel</DialogTitle>
           </DialogHeader>
-          <SegmentFilter
-            initialSegments={getActiveChannelSegments()}
-            onSave={saveSegments}
-          />
+          <div className="mt-4">
+            <AudienceSelector
+              initialSelectedAudiences={dialogAudiences}
+              initialSelectedCohorts={dialogCohorts}
+              initialSelectedBehaviors={dialogBehaviors}
+              onAudienceChange={setDialogAudiences}
+              onCohortsChange={setDialogCohorts}
+              onBehaviorsChange={setDialogBehaviors}
+            />
+          </div>
+          <div className="flex justify-end gap-2 mt-6">
+            <Button variant="outline" onClick={() => setShowSegmentFilter(false)}>
+              Cancel
+            </Button>
+            <Button onClick={saveSegments}>
+              Save Segments
+            </Button>
+          </div>
         </DialogContent>
       </Dialog>
     </div>
