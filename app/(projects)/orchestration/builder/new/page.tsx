@@ -142,6 +142,11 @@ export default function NewCampaign() {
   const [showPreviewDialog, setShowPreviewDialog] = useState(false)
   const [campaignName, setCampaignName] = useState("Medication Adherence Campaign")
   
+  // Custom goal states
+  const [customGoalTitle, setCustomGoalTitle] = useState("")
+  const [customGoalDescription, setCustomGoalDescription] = useState("")
+  const [customGoalTarget, setCustomGoalTarget] = useState("")
+  
   // Journey Builder specific states
   const [journeyActiveTab, setJourneyActiveTab] = useState("scratch") 
   const [showSuccessDialog, setShowSuccessDialog] = useState(false)
@@ -333,7 +338,81 @@ export default function NewCampaign() {
                         </CardContent>
                       </Card>
                     ))}
+                    
+                    {/* Custom Goal Option */}
+                    <Card
+                      className={`cursor-pointer transition-all hover:border-primary hover:shadow-md ${
+                        selectedGoal === "custom" ? "border-primary bg-primary/5 ring-1 ring-primary" : ""
+                      }`}
+                      onClick={() => setSelectedGoal("custom")}
+                    >
+                      <CardContent className="p-4">
+                        <div className="flex justify-between items-center mb-3">
+                          <div
+                            className={`flex items-center justify-center h-10 w-10 rounded-full ${
+                              selectedGoal === "custom" ? "bg-primary text-white" : "bg-primary/10 text-primary"
+                            }`}
+                          >
+                            <Target className="h-5 w-5" />
+                          </div>
+                          {selectedGoal === "custom" && <Badge className="bg-primary">Selected</Badge>}
+                        </div>
+                        <h3 className="font-semibold text-lg mb-1">Define Custom Goal</h3>
+                        <p className="text-sm text-muted-foreground mb-3">Create your own personalized campaign objective</p>
+                        <Badge variant="outline" className="text-xs">
+                          Customize your target
+                        </Badge>
+                      </CardContent>
+                    </Card>
                   </div>
+
+                  {/* Custom Goal Form - Show when custom is selected */}
+                  {selectedGoal === "custom" && (
+                    <div className="mb-8 p-6 border rounded-lg bg-gray-50">
+                      <h3 className="text-lg font-medium mb-4">Define Your Custom Goal</h3>
+                      <div className="space-y-4">
+                        <div>
+                          <label htmlFor="custom-goal-title" className="block text-sm font-medium mb-1">
+                            Goal Title
+                          </label>
+                          <input
+                            type="text"
+                            id="custom-goal-title"
+                            value={customGoalTitle}
+                            onChange={(e) => setCustomGoalTitle(e.target.value)}
+                            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
+                            placeholder="Enter your campaign goal title"
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="custom-goal-description" className="block text-sm font-medium mb-1">
+                            Goal Description
+                          </label>
+                          <textarea
+                            id="custom-goal-description"
+                            value={customGoalDescription}
+                            onChange={(e) => setCustomGoalDescription(e.target.value)}
+                            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
+                            rows={3}
+                            placeholder="Describe what you want to achieve with this campaign"
+                          />
+                        </div>
+                        <div>
+                          <label htmlFor="custom-goal-target" className="block text-sm font-medium mb-1">
+                            Target Outcome (Optional)
+                          </label>
+                          <input
+                            type="text"
+                            id="custom-goal-target"
+                            value={customGoalTarget}
+                            onChange={(e) => setCustomGoalTarget(e.target.value)}
+                            className="w-full px-3 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-primary/50"
+                            placeholder="e.g., 30% increase in engagement, 50 completed appointments"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  )}
 
                   {/* Campaign Name Input */}
                   <div className="mb-6">
@@ -354,7 +433,17 @@ export default function NewCampaign() {
                   <div></div> {/* Empty div to maintain layout with justify-between */}
                   <div className="flex gap-2">
                     <Button variant="outline">Save Draft</Button>
-                    <Button className="gap-2" onClick={() => setActiveTab("segments")}>
+                    <Button 
+                      className="gap-2" 
+                      onClick={() => {
+                        // Validate custom goal if selected
+                        if (selectedGoal === "custom" && !customGoalTitle.trim()) {
+                          alert("Please enter a goal title for your custom goal");
+                          return;
+                        }
+                        setActiveTab("segments");
+                      }}
+                    >
                       Continue to Segments
                       <ArrowRight className="h-4 w-4" />
                     </Button>
@@ -530,7 +619,12 @@ export default function NewCampaign() {
                             <div>
                               <p className="text-sm font-medium text-muted-foreground">Goal</p>
                               <div className="flex items-center">
-                                {selectedGoalDetails && (
+                                {selectedGoal === "custom" ? (
+                                  <>
+                                    <Target className="h-4 w-4 text-primary mr-2" />
+                                    <span>{customGoalTitle || "Custom Goal"}</span>
+                                  </>
+                                ) : selectedGoalDetails && (
                                   <>
                                     <selectedGoalDetails.icon className="h-4 w-4 text-primary mr-2" />
                                     <span>{selectedGoalDetails.title}</span>
