@@ -777,7 +777,7 @@ export default function NewCampaign() {
               Create Another Campaign
             </Button>
           </DialogFooter>
-        </DialogContent>C
+        </DialogContent>
       </Dialog>
     </div>
   )

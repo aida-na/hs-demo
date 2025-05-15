@@ -72,7 +72,7 @@ export default function HDEStatusPage() {
           <TabsList>
             <TabsTrigger value="overview">Overview</TabsTrigger>
             <TabsTrigger value="sources">Data Sources</TabsTrigger>
-            <TabsTrigger value="quality">Data Quality</TabsTrigger>
+            <TabsTrigger value="quality">Enrichment</TabsTrigger>
             <TabsTrigger value="profiles">Member Profiles</TabsTrigger>
             <TabsTrigger value="insights">Population Insights</TabsTrigger>
           </TabsList>
@@ -210,39 +210,6 @@ function DataOverview() {
         </Card>
       </div>
       <Card className="mt-6">
-  <CardHeader>
-    <CardTitle className="flex items-center">
-      <Sparkles className="h-5 w-5 mr-2 text-primary" />
-      Quick-Win Opportunities
-    </CardTitle>
-    <CardDescription>
-      Immediate improvements through strategic data connections
-    </CardDescription>
-  </CardHeader>
-  <CardContent>
-    <div className="space-y-4">
-      <div className="p-4 border rounded-lg bg-blue-50">
-        <div className="flex items-center justify-between mb-2">
-          <h3 className="font-medium">Pharmacy Data Connection</h3>
-          <Badge className="bg-blue-200 text-blue-800">High Impact</Badge>
-        </div>
-        <div className="grid grid-cols-3 gap-2 mb-3">
-          <div>
-            <p className="text-xs text-muted-foreground">Implementation Time</p>
-            <p className="font-medium">1-2 weeks</p>
-          </div>
-          <div>
-            <p className="text-xs text-muted-foreground">Members Affected</p>
-            <p className="font-medium">12,850</p>
-          </div>
-        </div>
-        <p className="text-sm mb-3">
-          Connecting pharmacy data could improve medication adherence campaigns and reduce preventable admissions.
-        </p>
-        <Button size="sm">Connect</Button>
-      </div>
-    </div>
-  </CardContent>
 </Card>
     </div>
   )
@@ -253,24 +220,7 @@ function DataQuality() {
   return (
     <div className="space-y-6">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between">
-        <h2 className="text-2xl font-bold tracking-tight">Data Quality & Enrichment</h2>
-        <div className="flex items-center gap-2 mt-2 md:mt-0">
-          <Select defaultValue="all">
-            <SelectTrigger className="w-[180px]">
-              <SelectValue placeholder="Data category" />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="all">All Categories</SelectItem>
-              <SelectItem value="demographics">Demographics</SelectItem>
-              <SelectItem value="claims">Claims</SelectItem>
-              <SelectItem value="clinical">Clinical</SelectItem>
-            </SelectContent>
-          </Select>
-          <Button size="sm" variant="outline">
-            <Download className="mr-2 h-4 w-4" />
-            Export
-          </Button>
-        </div>
+        <h2 className="text-2xl font-bold tracking-tight">Data Enrichment</h2>
       </div>
       <Card>
         <CardHeader>
@@ -493,7 +443,7 @@ function DataSources() {
         <Card>
           <CardHeader>
             <CardTitle>Claims Data Integration</CardTitle>
-            <CardDescription>Status of claims data processing</CardDescription>
+            <CardDescription>Status of claims data processing and normalization</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">

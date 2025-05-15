@@ -449,7 +449,7 @@ export default function JourneyBuilder({
                           <DialogTitle>Select Channel Type</DialogTitle>
                         </DialogHeader>
                         <div className="grid grid-cols-2 gap-4 py-4">
-                          {(["email", "sms", "call", "push", "mail"] as ChannelType[]).map((type) => (
+                          {(["email", "sms", "call", "mail"] as ChannelType[]).map((type) => (
                             <Button
                               key={type}
                               variant="outline"
@@ -487,7 +487,7 @@ export default function JourneyBuilder({
 
       {/* Content Studio Dialog */}
       <Dialog open={showContentStudio} onOpenChange={setShowContentStudio}>
-        <DialogContent className="max-w-4xl">
+        <DialogContent className="max-w-7xl">
           <DialogHeader>
             <DialogTitle>Content Studio</DialogTitle>
           </DialogHeader>
