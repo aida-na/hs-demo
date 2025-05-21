@@ -1,6 +1,7 @@
 "use client"
 
 import { useState } from "react"
+import { useRouter } from "next/navigation"
 import {
   Activity,
   Calendar,
@@ -130,8 +131,14 @@ const cohortData: CohortData = {
 }
 
 export default function Dashboard() {
+  const router = useRouter()
   const [activeAudience, setActiveAudience] = useState<Audience>(audiences[0])
   const [selectedCohort, setSelectedCohort] = useState<string | null>(null)
+
+  // Function to handle navigation to the builder page
+  const handleNewAudience = () => {
+    router.push("/hde/smart-cohorts/builder")
+  }
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-background">
@@ -181,7 +188,7 @@ export default function Dashboard() {
                 </TabsTrigger>
               </TabsList>
 
-              <Button>
+              <Button onClick={handleNewAudience}>
                 <Plus className="mr-2 h-4 w-4" />
                 New Audience
               </Button>
