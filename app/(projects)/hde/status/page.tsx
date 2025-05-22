@@ -4,7 +4,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import DataOverview from "@/components/hde/dataoverview"
 import DataSources from "@/components/hde/datasources"
 import { MemberProfiles } from "@/components/hde/memberprofiles"
-import { PopulationInsights } from "@/components/hde/populationinsights"
+import PopulationInsights from "@/components/hde/populationinsights"
 import { DataQuality } from "@/components/hde/dataquality"
 
 export default function HDEStatusPage() {
