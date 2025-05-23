@@ -31,34 +31,36 @@ import { Separator } from "@/components/ui/separator"
 import CampaignChannelChart from "@/components/campaign/campaign-channel-chart"
 import CampaignPerformanceChart from "@/components/campaign/campaign-performance-chart"
 import CampaignCohortReach from "@/components/campaign/campaign-cohort-reach"
+import MultiStepCampaignAnalysis, { MultiStepCampaign } from "@/components/campaign/campaign-multi-step-analysis"
+import { sampleMultiStepCampaign } from "@/components/campaign/campaign-multi-step-analysis"
 
 // Sample campaign data
 const campaigns = [
   {
-    id: "med-adherence-q2",
-    name: "Medication Adherence Q2",
-    audience: "Medication Adherence",
+    id: "medication-adherence-journey",
+    name: "Medication Adherence Journey",
+    audience: "New Prescription Members",
     audienceIcon: Heart,
     status: "active",
     startDate: "2023-04-01",
-    endDate: "2023-06-30",
-    progress: 65,
-    channels: ["SMS", "Email", "Call"],
+    endDate: "2023-07-30",
+    progress: 50,
+    channels: ["SMS", "Email", "Call", "Mail"],
     cohorts: [
-      { name: "Seniors 65+", count: 1200, reachPercentage: 78 },
-      { name: "Chronic Conditions", count: 950, reachPercentage: 82 },
-      { name: "New Prescriptions", count: 650, reachPercentage: 91 },
+      { name: "Seniors 65+", count: 800, reachPercentage: 100 },
+      { name: "Chronic Conditions", count: 950, reachPercentage: 100 },
+      { name: "First-time Prescription", count: 750, reachPercentage: 100 },
     ],
     metrics: {
-      reach: 2800,
-      engagement: 72,
-      conversion: 38,
-      costPerConversion: 12.45,
+      reach: 2500,
+      engagement: 66.9,
+      conversion: 32.0,
+      costPerConversion: 12.50,
     },
     channelMetrics: {
-      SMS: { sent: 2500, delivered: 2450, opened: 0, clicked: 1200, converted: 650 },
-      Email: { sent: 2800, delivered: 2700, opened: 1800, clicked: 950, converted: 420 },
-      Call: { sent: 950, delivered: 0, opened: 0, clicked: 0, converted: 320 },
+      SMS: { sent: 2500, delivered: 2480, opened: 0, clicked: 1450, converted: 750 },
+      Email: { sent: 2500, delivered: 2450, opened: 1850, clicked: 1200, converted: 850 },
+      Call: { sent: 0, delivered: 0, opened: 0, clicked: 0, converted: 0 },
       Mail: { sent: 0, delivered: 0, opened: 0, clicked: 0, converted: 0 },
     },
   },
@@ -201,7 +203,58 @@ const getChannelIcon = (channel: string) => {
 
 export default function CampaignDashboard() {
   const [selectedCampaign, setSelectedCampaign] = useState(campaigns[0])
-  const [viewMode, setViewMode] = useState<"overview" | "details">("overview")
+  const [viewMode, setViewMode] = useState<"overview" | "details" | "multi-step">("overview")
+
+  // Function to convert regular campaign to multi-step format
+  const getMultiStepCampaign = (campaign: typeof campaigns[0]): MultiStepCampaign => {
+    return {
+      id: campaign.id,
+      name: campaign.name,
+      audience: campaign.audience,
+      status: campaign.status as "active" | "completed" | "draft",
+      startDate: campaign.startDate,
+      endDate: campaign.endDate,
+      totalSteps: 4,
+      completedSteps: Math.ceil(campaign.progress / 25),
+      overallMetrics: {
+        totalReach: campaign.metrics.reach,
+        overallEngagement: campaign.metrics.engagement,
+        overallConversion: campaign.metrics.conversion,
+        totalCostPerConversion: campaign.metrics.costPerConversion,
+        dropoffRate: 22,
+      },
+      steps: [
+        {
+          id: "welcome-onboarding",
+          name: "Welcome & Onboarding",
+          description: "Initial welcome message and prescription information",
+          stepNumber: 1,
+          channels: campaign.channels,
+          triggerDelay: 0,
+          status: "completed" as const,
+          startDate: campaign.startDate,
+          endDate: new Date(new Date(campaign.startDate).getTime() + 14 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
+          cohorts: campaign.cohorts.map(cohort => ({
+            ...cohort,
+            engagementRate: 75,
+            conversionRate: 45,
+          })),
+          channelMetrics: campaign.channelMetrics,
+          stepMetrics: {
+            totalSent: Object.values(campaign.channelMetrics).reduce((sum, metric) => sum + metric.sent, 0),
+            totalDelivered: Object.values(campaign.channelMetrics).reduce((sum, metric) => sum + metric.delivered, 0),
+            totalEngaged: Object.values(campaign.channelMetrics).reduce((sum, metric) => sum + metric.clicked, 0),
+            totalConverted: Object.values(campaign.channelMetrics).reduce((sum, metric) => sum + metric.converted, 0),
+            deliveryRate: 98.6,
+            engagementRate: campaign.metrics.engagement,
+            conversionRate: campaign.metrics.conversion,
+            costPerConversion: campaign.metrics.costPerConversion,
+          },
+        },
+        // Add more steps as needed
+      ],
+    }
+  }
 
   return (
     <div className="flex h-screen w-full overflow-hidden bg-background">
@@ -215,12 +268,13 @@ export default function CampaignDashboard() {
           <div className="flex items-center justify-between mb-6">
             <Tabs
               value={viewMode}
-              onValueChange={(value) => setViewMode(value as "overview" | "details")}
-              className="w-[400px]"
+              onValueChange={(value) => setViewMode(value as "overview" | "details" | "multi-step")}
+              className="w-[600px]"
             >
               <TabsList>
                 <TabsTrigger value="overview">Campaign Overview</TabsTrigger>
                 <TabsTrigger value="details">Campaign Details</TabsTrigger>
+                <TabsTrigger value="multi-step">Multi-Step Analysis</TabsTrigger>
               </TabsList>
             </Tabs>
 
@@ -323,7 +377,7 @@ export default function CampaignDashboard() {
                 </Card>
               ))}
             </div>
-          ) : (
+          ) : viewMode === "details" ? (
             <div className="space-y-6">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-4">
@@ -527,9 +581,19 @@ export default function CampaignDashboard() {
               </Card>
               </div>
             </div>
+          ) : (
+            <div className="space-y-6">
+              <MultiStepCampaignAnalysis 
+                campaign={getMultiStepCampaign(selectedCampaign)}
+                onEdit={() => {
+                  // Handle edit action
+                  console.log("Edit multi-step campaign")
+                }}
+              />
+            </div>
           )}
         </main>
       </div>
     </div>
-  )
+  );
 }
