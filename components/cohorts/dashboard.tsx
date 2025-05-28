@@ -287,7 +287,6 @@ export default function Dashboard() {
                                 <ul className="list-disc pl-5 mt-1 space-y-1">
                                   <li>Demographics: {idx === 0 ? "65+ age group, urban" : idx === 1 ? "45-64, suburban" : idx === 2 ? "25-44, tech-savvy" : "Mixed demographics, rural focus"}</li>
                                   <li>Behavioral Pattern: {idx === 0 ? "Prefers guided support" : idx === 1 ? "Self-directed research" : idx === 2 ? "Highly responsive to incentives" : "Requires multiple touchpoints"}</li>
-                                  <li>Risk Level: {idx === 0 ? "High" : idx === 1 ? "Medium" : idx === 2 ? "Low" : "Variable"}</li>
                                 </ul>
                               </div>
                               <div className="flex flex-wrap gap-2">
@@ -310,20 +309,6 @@ export default function Dashboard() {
 
                   {/* Right column - Channel Effectiveness and Performance Metrics stacked */}
                   <div className="col-span-1 space-y-7">
-                    {/* Channel Effectiveness Card */}
-                    <Card className="mt-10">
-                      <CardHeader>
-                        <CardTitle>Channel Effectiveness</CardTitle>
-                        <CardDescription>Engagement by communication channel</CardDescription>
-                      </CardHeader>
-                      <CardContent className="p-0">
-                        <div className="h-66">
-                          <ChannelEffectivenessChart journeyId={audience.id} cohortId={selectedCohort} />
-                        </div>
-                      </CardContent>
-                    </Card>
-
-                    {/* Performance Metrics Card - Now directly under Channel Effectiveness */}
                     <Card>
                       <CardHeader>
                         <CardTitle>Performance Metrics</CardTitle>

@@ -55,6 +55,8 @@ export function Sidebar({ className, isExpanded }: SidebarProps) {
       href: "/hde",
       subsections: [
         { label: "HDE Status", href: "/hde/status" },
+        { label: "Population Insights", href: "/hde/population" },
+        { label: "Member Profiles", href: "/hde/profiles" },
         { label: "Smart Cohorts", href: "/hde/smart-cohorts", badge: 2 }
       ]
     },
