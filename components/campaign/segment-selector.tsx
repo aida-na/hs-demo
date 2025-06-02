@@ -22,7 +22,10 @@ import {
   Mail,
   AlertTriangle,
   Building,
-  Calendar as CalendarIcon
+  Calendar as CalendarIcon,
+  UserX,
+  TrendingUp,
+  Stethoscope
 } from "lucide-react"
 
 // Define the audience type with cohorts
@@ -42,88 +45,124 @@ interface Cohort {
   response: string;
 }
 
-// Main audience groups
+// Main audience groups aligned with care journey stages
 const audiences: Audience[] = [
-  { 
-    id: "medication", 
-    name: "Medication Adherence", 
-    count: 3250, 
-    category: "Health Management",
-    icon: Heart,
-    cohorts: [
-      { id: "tech-seniors", name: "Tech-Savvy Seniors", size: 1240, response: "SMS + Email" },
-      { id: "traditional", name: "Traditional Memberss", size: 980, response: "Call + Mail" },
-      { id: "busy-professionals", name: "Busy Professionals", size: 675, response: "Email + Portal" },
-      { id: "new-rx", name: "New Prescription Users", size: 355, response: "SMS + Call" }
-    ]
-  },
-  { 
-    id: "caregap", 
-    name: "Care Gap Closure", 
-    count: 2180, 
-    category: "Care Delivery",
-    icon: Activity,
-    cohorts: [
-      { id: "preventive-avoid", name: "Preventive Care Avoiders", size: 890, response: "Call + SMS" },
-      { id: "schedule-challenge", name: "Schedule Challenged", size: 760, response: "SMS + Email" },
-      { id: "health-conscious", name: "Health Conscious", size: 530, response: "Email + Portal" }
-    ]
-  },
-  { 
-    id: "chronic", 
-    name: "Chronic Condition Management", 
-    count: 1950, 
-    category: "Health Management",
-    icon: Activity
-  },
-  { 
-    id: "wellness", 
-    name: "Annual Wellness Visit", 
-    count: 3420, 
-    category: "Preventive Care",
-    icon: Calendar
-  },
   { 
     id: "onboarding", 
     name: "New Member Onboarding", 
-    count: 1240, 
-    category: "Membership",
-    icon: UserPlus
+    count: 1200, 
+    category: "Care Journey",
+    icon: UserPlus,
+    cohorts: [
+      { id: "tech-savvy-newcomers", name: "Tech-Savvy Newcomers", size: 340, response: "Mobile App + Email" },
+      { id: "guidance-seekers", name: "Guidance Seekers", size: 450, response: "Phone + Email" },
+      { id: "hesitant-adopters", name: "Hesitant Adopters", size: 410, response: "SMS + Phone" }
+    ]
   },
   { 
-    id: "highrisk", 
-    name: "High-Risk Member Intervention", 
-    count: 890, 
-    category: "Risk Level",
-    icon: Zap
+    id: "first_appointment", 
+    name: "First Appointment Scheduling", 
+    count: 800, 
+    category: "Care Journey",
+    icon: Calendar,
+    cohorts: [
+      { id: "proactive-schedulers", name: "Proactive Schedulers", size: 280, response: "Portal + Email" },
+      { id: "appointment-avoiders", name: "Appointment Avoiders", size: 520, response: "SMS + Telehealth" }
+    ]
   },
   { 
-    id: "discharge", 
+    id: "gaps_in_care", 
+    name: "Care Gap Closure", 
+    count: 2100, 
+    category: "Care Journey",
+    icon: AlertTriangle,
+    cohorts: [
+      { id: "chronic-care-gaps", name: "Chronic Care Gaps", size: 890, response: "Phone + Mail" },
+      { id: "preventive-care-laggards", name: "Preventive Care Laggards", size: 1210, response: "Email + Portal" }
+    ]
+  },
+  { 
+    id: "churn_risk", 
+    name: "Member Retention", 
+    count: 900, 
+    category: "Care Journey",
+    icon: UserX,
+    cohorts: [
+      { id: "disengaged-members", name: "Disengaged Members", size: 540, response: "SMS + Social" },
+      { id: "service-dissatisfied", name: "Service Dissatisfied", size: 360, response: "Phone + Email" }
+    ]
+  },
+  { 
+    id: "chronic_condition", 
+    name: "Chronic Condition Management", 
+    count: 1850, 
+    category: "Health Management",
+    icon: Heart,
+    cohorts: [
+      { id: "diabetes-management", name: "Diabetes Management", size: 650, response: "SMS + Portal" },
+      { id: "hypertension-care", name: "Hypertension Care", size: 580, response: "Phone + Email" },
+      { id: "multiple-conditions", name: "Multiple Conditions", size: 620, response: "Phone + Care Coord" }
+    ]
+  },
+  { 
+    id: "wellness_prevention", 
+    name: "Wellness & Prevention", 
+    count: 3200, 
+    category: "Preventive Care",
+    icon: Activity,
+    cohorts: [
+      { id: "wellness-champions", name: "Wellness Champions", size: 1240, response: "Email + App" },
+      { id: "incentive-motivated", name: "Incentive Motivated", size: 980, response: "SMS + Rewards" },
+      { id: "community-focused", name: "Community Focused", size: 980, response: "Social + Events" }
+    ]
+  },
+  { 
+    id: "medication_adherence", 
+    name: "Medication Adherence", 
+    count: 1620, 
+    category: "Health Management",
+    icon: Stethoscope,
+    cohorts: [
+      { id: "new-rx-users", name: "New Prescription Users", size: 485, response: "SMS + Call" },
+      { id: "chronic-med-users", name: "Chronic Med Users", size: 720, response: "Portal + Reminders" },
+      { id: "cost-concerned", name: "Cost Concerned", size: 415, response: "Phone + Financial Aid" }
+    ]
+  },
+  { 
+    id: "post_discharge", 
     name: "Post-Discharge Follow-Up", 
     count: 760, 
     category: "Care Transition",
-    icon: FileText
+    icon: FileText,
+    cohorts: [
+      { id: "high-readmission-risk", name: "High Readmission Risk", size: 320, response: "Phone + Home Visit" },
+      { id: "surgical-recovery", name: "Surgical Recovery", size: 280, response: "Portal + Nurse Call" },
+      { id: "emergency-discharge", name: "Emergency Discharge", size: 160, response: "Phone + Same Day" }
+    ]
   },
   { 
-    id: "sdoh", 
-    name: "SDOH Support", 
+    id: "sdoh_support", 
+    name: "Social Determinants Support", 
     count: 1320, 
     category: "Social Determinants",
-    icon: Users
+    icon: Users,
+    cohorts: [
+      { id: "transport-barriers", name: "Transportation Barriers", size: 520, response: "Phone + Telehealth" },
+      { id: "food-insecurity", name: "Food Insecurity", size: 450, response: "Mail + Community" },
+      { id: "housing-unstable", name: "Housing Unstable", size: 350, response: "Phone + Social Work" }
+    ]
   },
   { 
-    id: "digital", 
+    id: "digital_adoption", 
     name: "Digital Tool Adoption", 
     count: 2450, 
-    category: "Digital",
-    icon: Laptop
-  },
-  { 
-    id: "benefits", 
-    name: "Benefits Utilization", 
-    count: 1870, 
-    category: "Membership",
-    icon: PieChart
+    category: "Digital Engagement",
+    icon: Laptop,
+    cohorts: [
+      { id: "portal-hesitant", name: "Portal Hesitant", size: 980, response: "Tutorial + Support" },
+      { id: "app-downloaders", name: "App Downloaders", size: 850, response: "Push + Gamification" },
+      { id: "tech-advanced", name: "Tech Advanced", size: 620, response: "API + Integrations" }
+    ]
   }
 ]
 
@@ -135,7 +174,10 @@ const behaviors = [
   { id: "signup", name: "Signed Up For Portal", count: 2134, category: "Digital", icon: UserPlus },
   { id: "missed-appt", name: "Missed Appointment", count: 1876, category: "Care Gaps", icon: AlertTriangle },
   { id: "employer", name: "Employer Group", count: 5432, category: "Membership", icon: Building },
-  { id: "appointment-due", name: "Appointment Due", count: 2987, category: "Care Gaps", icon: CalendarIcon }
+  { id: "appointment-due", name: "Appointment Due", count: 2987, category: "Care Gaps", icon: CalendarIcon },
+  { id: "high-utilizer", name: "High Healthcare Utilizer", count: 890, category: "Utilization", icon: TrendingUp },
+  { id: "er-frequent", name: "Frequent ER Visits", count: 445, category: "Utilization", icon: AlertTriangle },
+  { id: "specialty-referral", name: "Pending Specialty Referral", count: 1567, category: "Care Coordination", icon: FileText }
 ]
 
 interface AudienceSelectorProps {
@@ -306,7 +348,7 @@ export default function AudienceSelector({
 
           <Tabs value={currentTab} onValueChange={setCurrentTab}>
             <TabsList className="mb-4">
-              <TabsTrigger value="audiences">Primary Audiences</TabsTrigger>
+              <TabsTrigger value="audiences">Care Journey Stages</TabsTrigger>
               <TabsTrigger value="cohorts">Smart Cohorts</TabsTrigger>
               <TabsTrigger value="behaviors">Behavioral Filters</TabsTrigger>
             </TabsList>
@@ -357,7 +399,7 @@ export default function AudienceSelector({
               {selectedAudiences.length === 0 ? (
                 <div className="p-4 border rounded-md bg-muted/50">
                   <p className="text-center text-muted-foreground">
-                    Please select at least one audience to view available cohorts
+                    Please select at least one care journey stage to view available cohorts
                   </p>
                 </div>
               ) : (
@@ -383,7 +425,7 @@ export default function AudienceSelector({
                             <Badge variant="outline" className="mr-2">
                               {parentAudience?.name || "Cohort"}
                             </Badge>
-                            {cohort.size.toLocaleString()} members
+                            {cohort.size.toLocaleString()} members • {cohort.response}
                           </div>
                         </div>
                       </div>
@@ -466,7 +508,7 @@ export default function AudienceSelector({
                   {/* Audiences Section */}
                   {selectedAudiences.length > 0 && (
                     <div>
-                      <h4 className="text-sm font-medium mb-2">Primary Audiences</h4>
+                      <h4 className="text-sm font-medium mb-2">Care Journey Stages</h4>
                       <div className="space-y-2">
                         {selectedAudiences.map((id) => {
                           const audience = audiences.find((a) => a.id === id)

@@ -27,7 +27,8 @@ import {
   Activity,
   Calendar,
   UserPlus,
-  Zap,
+  UserX,
+  AlertTriangle,
   Save,
   Check,
   Info,
@@ -38,6 +39,9 @@ import {
   Send,
   CheckCircle,
   Settings,
+  Stethoscope,
+  FileText,
+  Laptop
 } from "lucide-react"
 import AudienceSelector from "@/components/campaign/segment-selector"
 import JourneyBuilder from "@/components/journey/journey-builder"
@@ -54,6 +58,7 @@ type AudienceGoal = {
   icon: React.ElementType
   count: number
   recommendedFor?: string[]
+  category: string
 }
 type Segment = {
   id: string
@@ -61,87 +66,142 @@ type Segment = {
   count: number
 }
 
-// Sample goals and segments for the summary sidebar
+// Updated goals to match care journey stages
 const audienceGoals: AudienceGoal[] = [
   {
-    id: "medication",
+    id: "onboarding",
+    title: "Member Onboarding",
+    description: "Help new members get started with their healthcare journey",
+    icon: UserPlus,
+    count: 1200,
+    recommendedFor: ["New enrollees", "Plan changes", "Recent signups"],
+    category: "Care Journey"
+  },
+  {
+    id: "first_appointment",
+    title: "First Appointment Scheduling",
+    description: "Guide members to schedule and attend their initial care visit",
+    icon: Calendar,
+    count: 800,
+    recommendedFor: ["New members", "Appointment avoiders", "Telehealth options"],
+    category: "Care Journey"
+  },
+  {
+    id: "gaps_in_care",
+    title: "Care Gap Closure",
+    description: "Address missing recommended care and preventive services",
+    icon: AlertTriangle,
+    count: 2100,
+    recommendedFor: ["Chronic conditions", "Preventive care", "Quality measures"],
+    category: "Care Journey"
+  },
+  {
+    id: "churn_risk",
+    title: "Member Retention",
+    description: "Re-engage members at risk of leaving or becoming inactive",
+    icon: UserX,
+    count: 900,
+    recommendedFor: ["Disengaged members", "Service issues", "Low utilization"],
+    category: "Care Journey"
+  },
+  {
+    id: "chronic_condition",
+    title: "Chronic Condition Management",
+    description: "Support ongoing management of chronic health conditions",
+    icon: Heart,
+    count: 1850,
+    recommendedFor: ["Diabetes", "Hypertension", "Multiple conditions"],
+    category: "Health Management"
+  },
+  {
+    id: "wellness_prevention",
+    title: "Wellness & Prevention",
+    description: "Promote healthy behaviors and preventive care practices",
+    icon: Activity,
+    count: 3200,
+    recommendedFor: ["Annual wellness", "Health screenings", "Lifestyle programs"],
+    category: "Preventive Care"
+  },
+  {
+    id: "medication_adherence",
     title: "Medication Adherence",
     description: "Improve compliance with prescribed medications",
-    icon: Heart,
-    count: 3250,
-    recommendedFor: ["Chronic conditions", "Elderly members"],
+    icon: Stethoscope,
+    count: 1620,
+    recommendedFor: ["New prescriptions", "Chronic medications", "Cost concerns"],
+    category: "Health Management"
   },
   {
-    id: "caregap",
-    title: "Care Gap Closure",
-    description: "Identify and address gaps in patient care",
-    icon: Activity,
-    count: 2180,
-    recommendedFor: ["Preventive care", "Quality measures"],
+    id: "post_discharge",
+    title: "Post-Discharge Follow-Up",
+    description: "Ensure proper care transitions after hospital discharge",
+    icon: FileText,
+    count: 760,
+    recommendedFor: ["High readmission risk", "Surgical recovery", "Emergency discharge"],
+    category: "Care Transition"
   },
   {
-    id: "wellness",
-    title: "Annual Wellness Visit",
-    description: "Encourage preventive care and regular check-ups",
-    icon: Calendar,
-    count: 3420,
-    recommendedFor: ["Medicare members", "New enrollees"],
-  },
-  {
-    id: "onboarding",
-    title: "New Member Onboarding",
-    description: "Welcome new members and guide them through initial steps",
-    icon: UserPlus,
-    count: 1240,
-    recommendedFor: ["Recent enrollees", "Plan changes"],
-  },
-  {
-    id: "highrisk",
-    title: "High-Risk Member Intervention",
-    description: "Targeted support for members with complex needs",
-    icon: Zap,
-    count: 890,
-    recommendedFor: ["Multiple conditions", "High utilizers"],
-  },
+    id: "digital_adoption",
+    title: "Digital Tool Adoption",
+    description: "Increase engagement with digital health tools and platforms",
+    icon: Laptop,
+    count: 2450,
+    recommendedFor: ["Portal hesitant", "App adoption", "Tech-advanced users"],
+    category: "Digital Engagement"
+  }
 ]
 
 // Sample journey templates
 const journeyTemplates = [
   {
-    id: "welcome",
-    title: "Welcome Series",
-    description: "A 3-step journey to welcome new members",
+    id: "onboarding_welcome",
+    title: "New Member Welcome Series",
+    description: "A 4-step journey to welcome and orient new members",
+    steps: 4,
+    recommended: true,
+  },
+  {
+    id: "appointment_reminder",
+    title: "Appointment Scheduling & Reminders",
+    description: "Guide members through scheduling with follow-up reminders",
     steps: 3,
     recommended: true,
   },
   {
-    id: "medication",
-    title: "Medication Reminder",
-    description: "Regular reminders with escalation for non-responders",
+    id: "care_gap_outreach",
+    title: "Care Gap Closure Campaign",
+    description: "Multi-channel outreach for missing preventive care",
     steps: 5,
     recommended: false,
   },
   {
-    id: "appointment",
-    title: "Appointment Follow-up",
-    description: "Pre and post appointment communication",
+    id: "retention_recovery",
+    title: "Member Re-engagement",
+    description: "Win back disengaged members with value demonstration",
     steps: 4,
+    recommended: false,
+  },
+  {
+    id: "medication_support",
+    title: "Medication Adherence Support",
+    description: "Regular reminders with escalation for non-responders",
+    steps: 6,
     recommended: false,
   },
 ]
 
 export default function NewCampaign() {
   // All hooks must be at the top of the component
-  const [selectedGoal, setSelectedGoal] = useState<string>("medication")
+  const [selectedGoal, setSelectedGoal] = useState<string>("onboarding")
   const [activeTab, setActiveTab] = useState<TabValue>("goal")
   const [selectedSegments, setSelectedSegments] = useState<Segment[]>([
-    { id: "new-members", name: "New Members", count: 1240 },
-    { id: "age-30-45", name: "Age 30-45", count: 2850 },
-    { id: "chronic", name: "Chronic Condition", count: 1950 },
+    { id: "tech-savvy-newcomers", name: "Tech-Savvy Newcomers", count: 340 },
+    { id: "guidance-seekers", name: "Guidance Seekers", count: 450 },
+    { id: "hesitant-adopters", name: "Hesitant Adopters", count: 410 },
   ])
   const [selectedTemplate, setSelectedTemplate] = useState<string | null>(null)
   const [showPreviewDialog, setShowPreviewDialog] = useState(false)
-  const [campaignName, setCampaignName] = useState("Medication Adherence Campaign")
+  const [campaignName, setCampaignName] = useState("New Member Onboarding Campaign")
   
   // Custom goal states
   const [customGoalTitle, setCustomGoalTitle] = useState("")
@@ -203,6 +263,15 @@ export default function NewCampaign() {
   // Handle navigating to dashboard after launch
   const handleViewDashboard = () => {
     router.push("/orchestration")
+  }
+
+  // Update campaign name when goal changes
+  const handleGoalSelection = (goalId: string) => {
+    setSelectedGoal(goalId)
+    const goal = audienceGoals.find(g => g.id === goalId)
+    if (goal && goalId !== "custom") {
+      setCampaignName(`${goal.title} Campaign`)
+    }
   }
 
   return (
@@ -305,76 +374,137 @@ export default function NewCampaign() {
                       <Target className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <CardTitle></CardTitle>
+                      <CardTitle>Select Campaign Goal</CardTitle>
                       <CardDescription className="mt-1">
-                        Choose the primary objective for your personalized health campaign
+                        Choose the care journey stage or health objective for your campaign
                       </CardDescription>
                     </div>
                   </div>
                 </CardHeader>
                 <CardContent className="pt-6">
-                  {/* Visual Campaign Goal Selection */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                    {audienceGoals.map((goal) => (
+                  {/* Group goals by category */}
+                  <div className="space-y-8">
+                    {/* Care Journey Goals */}
+                    <div>
+                      <h3 className="text-lg font-semibold mb-4 flex items-center">
+                        <div className="h-2 w-2 bg-blue-500 rounded-full mr-3"></div>
+                        Care Journey Stages
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {audienceGoals.filter(goal => goal.category === "Care Journey").map((goal) => (
+                          <Card
+                            key={goal.id}
+                            className={`cursor-pointer transition-all hover:border-primary hover:shadow-md ${
+                              selectedGoal === goal.id ? "border-primary bg-primary/5 ring-1 ring-primary" : ""
+                            }`}
+                            onClick={() => handleGoalSelection(goal.id)}
+                          >
+                            <CardContent className="p-4">
+                              <div className="flex justify-between items-center mb-3">
+                                <div
+                                  className={`flex items-center justify-center h-10 w-10 rounded-full ${
+                                    selectedGoal === goal.id ? "bg-primary text-white" : "bg-primary/10 text-primary"
+                                  }`}
+                                >
+                                  <goal.icon className="h-5 w-5" />
+                                </div>
+                                {selectedGoal === goal.id && <Badge className="bg-primary">Selected</Badge>}
+                              </div>
+                              <h4 className="font-semibold text-base mb-1">{goal.title}</h4>
+                              <p className="text-sm text-muted-foreground mb-3">{goal.description}</p>
+                              <div className="flex justify-between items-center">
+                                <Badge variant="outline" className="text-xs">
+                                  {goal.count.toLocaleString()} members
+                                </Badge>
+                                {goal.recommendedFor && (
+                                  <div className="flex gap-1">
+                                    {goal.recommendedFor.slice(0, 2).map((rec, i) => (
+                                      <Badge key={i} variant="secondary" className="text-xs">
+                                        {rec}
+                                      </Badge>
+                                    ))}
+                                  </div>
+                                )}
+                              </div>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Health Management Goals */}
+                    <div>
+                      <h3 className="text-lg font-semibold mb-4 flex items-center">
+                        <div className="h-2 w-2 bg-green-500 rounded-full mr-3"></div>
+                        Health Management & Support
+                      </h3>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {audienceGoals.filter(goal => ["Health Management", "Preventive Care", "Care Transition", "Digital Engagement"].includes(goal.category)).map((goal) => (
+                          <Card
+                            key={goal.id}
+                            className={`cursor-pointer transition-all hover:border-primary hover:shadow-md ${
+                              selectedGoal === goal.id ? "border-primary bg-primary/5 ring-1 ring-primary" : ""
+                            }`}
+                            onClick={() => handleGoalSelection(goal.id)}
+                          >
+                            <CardContent className="p-4">
+                              <div className="flex justify-between items-center mb-3">
+                                <div
+                                  className={`flex items-center justify-center h-8 w-8 rounded-full ${
+                                    selectedGoal === goal.id ? "bg-primary text-white" : "bg-primary/10 text-primary"
+                                  }`}
+                                >
+                                  <goal.icon className="h-4 w-4" />
+                                </div>
+                                {selectedGoal === goal.id && <Badge className="bg-primary text-xs">Selected</Badge>}
+                              </div>
+                              <h4 className="font-semibold text-sm mb-1">{goal.title}</h4>
+                              <p className="text-xs text-muted-foreground mb-2">{goal.description}</p>
+                              <Badge variant="outline" className="text-xs">
+                                {goal.count.toLocaleString()} members
+                              </Badge>
+                            </CardContent>
+                          </Card>
+                        ))}
+                      </div>
+                    </div>
+
+                    {/* Custom Goal Option */}
+                    <div>
+                      <h3 className="text-lg font-semibold mb-4 flex items-center">
+                        <div className="h-2 w-2 bg-purple-500 rounded-full mr-3"></div>
+                        Custom Goals
+                      </h3>
                       <Card
-                        key={goal.id}
                         className={`cursor-pointer transition-all hover:border-primary hover:shadow-md ${
-                          selectedGoal === goal.id ? "border-primary bg-primary/5 ring-1 ring-primary" : ""
+                          selectedGoal === "custom" ? "border-primary bg-primary/5 ring-1 ring-primary" : ""
                         }`}
-                        onClick={() => setSelectedGoal(goal.id)}
+                        onClick={() => handleGoalSelection("custom")}
                       >
                         <CardContent className="p-4">
                           <div className="flex justify-between items-center mb-3">
                             <div
                               className={`flex items-center justify-center h-10 w-10 rounded-full ${
-                                selectedGoal === goal.id ? "bg-primary text-white" : "bg-primary/10 text-primary"
+                                selectedGoal === "custom" ? "bg-primary text-white" : "bg-primary/10 text-primary"
                               }`}
                             >
-                              <goal.icon className="h-5 w-5" />
+                              <Target className="h-5 w-5" />
                             </div>
-                            {selectedGoal === goal.id && <Badge className="bg-primary">Selected</Badge>}
+                            {selectedGoal === "custom" && <Badge className="bg-primary">Selected</Badge>}
                           </div>
-                          <h3 className="font-semibold text-lg mb-1">{goal.title}</h3>
-                          <p className="text-sm text-muted-foreground mb-3">{goal.description}</p>
-                          <div className="flex flex-wrap gap-1 mb-2">
-                          </div>
+                          <h4 className="font-semibold text-base mb-1">Define Custom Goal</h4>
+                          <p className="text-sm text-muted-foreground mb-3">Create your own personalized campaign objective</p>
                           <Badge variant="outline" className="text-xs">
-                            {goal.count.toLocaleString()} members
+                            Customize your target
                           </Badge>
                         </CardContent>
                       </Card>
-                    ))}
-                    
-                    {/* Custom Goal Option */}
-                    <Card
-                      className={`cursor-pointer transition-all hover:border-primary hover:shadow-md ${
-                        selectedGoal === "custom" ? "border-primary bg-primary/5 ring-1 ring-primary" : ""
-                      }`}
-                      onClick={() => setSelectedGoal("custom")}
-                    >
-                      <CardContent className="p-4">
-                        <div className="flex justify-between items-center mb-3">
-                          <div
-                            className={`flex items-center justify-center h-10 w-10 rounded-full ${
-                              selectedGoal === "custom" ? "bg-primary text-white" : "bg-primary/10 text-primary"
-                            }`}
-                          >
-                            <Target className="h-5 w-5" />
-                          </div>
-                          {selectedGoal === "custom" && <Badge className="bg-primary">Selected</Badge>}
-                        </div>
-                        <h3 className="font-semibold text-lg mb-1">Define Custom Goal</h3>
-                        <p className="text-sm text-muted-foreground mb-3">Create your own personalized campaign objective</p>
-                        <Badge variant="outline" className="text-xs">
-                          Customize your target
-                        </Badge>
-                      </CardContent>
-                    </Card>
+                    </div>
                   </div>
 
                   {/* Custom Goal Form - Show when custom is selected */}
                   {selectedGoal === "custom" && (
-                    <div className="mb-8 p-6 border rounded-lg bg-gray-50">
+                    <div className="mt-8 p-6 border rounded-lg bg-gray-50">
                       <h3 className="text-lg font-medium mb-4">Define Your Custom Goal</h3>
                       <div className="space-y-4">
                         <div>
@@ -421,7 +551,7 @@ export default function NewCampaign() {
                   )}
 
                   {/* Campaign Name Input */}
-                  <div className="mb-6">
+                  <div className="mt-6">
                     <label htmlFor="campaign-name" className="block text-sm font-medium mb-1">
                       Campaign Name
                     </label>
@@ -450,7 +580,7 @@ export default function NewCampaign() {
                         setActiveTab("segments");
                       }}
                     >
-                      Continue to Segments
+                      Continue to Audience Selection
                       <ArrowRight className="h-4 w-4" />
                     </Button>
                   </div>
@@ -467,9 +597,9 @@ export default function NewCampaign() {
                       <Users className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <CardTitle>Select Member Segments</CardTitle>
+                      <CardTitle>Select Target Audience</CardTitle>
                       <CardDescription className="mt-1">
-                        Define your target audience by selecting patient segments
+                        Define your target audience by selecting care journey stages and member cohorts
                       </CardDescription>
                     </div>
                   </div>
@@ -558,7 +688,7 @@ export default function NewCampaign() {
                 <CardFooter className="flex justify-between border-t pt-4">
                   <Button variant="outline" className="gap-2" onClick={() => setActiveTab("segments")}>
                     <ArrowLeft className="h-4 w-4" />
-                    Back to Segments
+                    Back to Audience Selection
                   </Button>
                   <div className="flex gap-2">
                     <Button variant="outline">Save Draft</Button>
