@@ -406,8 +406,8 @@ export default function PopulationCohortsDashboard() {
           {/* Header */}
           <div className="flex justify-between items-start">
             <div>
-              <h1 className="text-3xl font-bold text-gray-900">Population Health Management</h1>
-              <p className="text-gray-600 mt-1">Actionable insights for member engagement and care delivery</p>
+              <h1 className="text-3xl font-bold text-gray-900">Smart Cohort Dashboard</h1>
+              <p className="text-gray-600 mt-1">Actionable insights for member engagement</p>
             </div>
             <div className="flex items-center gap-3">
               <Select value={selectedPopulation} onValueChange={setSelectedPopulation}>
@@ -763,22 +763,6 @@ export default function PopulationCohortsDashboard() {
                     ))}
                   </div>
                 </div>
-              </div>
-            </div>
-
-            {/* Recommended Actions */}
-            <div className="mb-6">
-              <h3 className="font-medium text-gray-900 mb-3 flex items-center">
-                <Activity className="w-4 h-4 mr-2" />
-                Recommended Actions
-              </h3>
-              <div className="space-y-2">
-                {selectedCohort.recommendedActions.map((action, i) => (
-                  <div key={i} className="flex items-center p-2 bg-gray-50 rounded text-sm">
-                    <div className="w-2 h-2 bg-blue-500 rounded-full mr-2"></div>
-                    {action}
-                  </div>
-                ))}
               </div>
             </div>
 
