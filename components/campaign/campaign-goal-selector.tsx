@@ -53,46 +53,11 @@ const audienceGoals: AudienceGoal[] = [
     count: 1950
   },
   {
-    id: "wellness",
-    title: "Annual Wellness Visit",
-    description: "Encourage preventive care and regular check-ups",
-    icon: <Calendar className="h-5 w-5 text-primary" />,
-    count: 3420
-  },
-  {
     id: "onboarding",
     title: "New Member Onboarding",
     description: "Welcome new patients and guide them through initial steps",
     icon: <UserPlus className="h-5 w-5 text-primary" />,
     count: 1240
-  },
-  {
-    id: "highrisk",
-    title: "High-Risk Member Intervention",
-    description: "Targeted support for members with complex needs",
-    icon: <Zap className="h-5 w-5 text-primary" />,
-    count: 890
-  },
-  {
-    id: "discharge",
-    title: "Post-Discharge Follow-Up",
-    description: "Support patients transitioning from hospital to home",
-    icon: <FileText className="h-5 w-5 text-primary" />,
-    count: 760
-  },
-  {
-    id: "sdoh",
-    title: "SDOH Support",
-    description: "Address social determinants of health barriers",
-    icon: <Users className="h-5 w-5 text-primary" />,
-    count: 1320
-  },
-  {
-    id: "digital",
-    title: "Digital Tool Adoption",
-    description: "Increase usage of health apps and digital services",
-    icon: <Laptop className="h-5 w-5 text-primary" />,
-    count: 2450
   },
 ]
 

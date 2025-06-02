@@ -305,7 +305,7 @@ export default function NewCampaign() {
                       <Target className="h-5 w-5 text-primary" />
                     </div>
                     <div>
-                      <CardTitle>Select Campaign Goal</CardTitle>
+                      <CardTitle></CardTitle>
                       <CardDescription className="mt-1">
                         Choose the primary objective for your personalized health campaign
                       </CardDescription>
